@@ -47,7 +47,7 @@
     </spacer>
    </item>
    <item row="3" column="1" colspan="2">
-    <widget class="QPushButton" name="buttonNew">
+    <widget class="QPushButton" name="buttonCreate">
      <property name="text">
       <string>Create new book</string>
      </property>
@@ -65,6 +65,22 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLabel" name="labelTitle">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Title Placeholder</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
    <item row="2" column="1">
     <widget class="QComboBox" name="entryBook">
@@ -89,6 +105,13 @@
      </property>
     </spacer>
    </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="QPushButton" name="buttonImport">
+     <property name="text">
+      <string>Import book</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="3">
     <spacer name="spacerRight">
      <property name="orientation">
@@ -101,29 +124,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="4" column="1" colspan="2">
-    <widget class="QPushButton" name="buttonImport">
-     <property name="text">
-      <string>Import book</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" colspan="2">
-    <widget class="QLabel" name="labelTitle">
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Title Placeholder</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
