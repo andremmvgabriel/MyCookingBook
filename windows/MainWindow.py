@@ -1,6 +1,7 @@
 from pathlib import Path
 from .Window import Window
 from Application import Application
+
 class MainWindow(Window):
     __books_path: Path = Path("books")
 
@@ -40,7 +41,7 @@ class MainWindow(Window):
     
     def create_book(self):
         print("creating")
-        #Application.Windows.open("create_book")
+        Application.Windows.open("create_book")
     
     def import_book(self):
         pass
