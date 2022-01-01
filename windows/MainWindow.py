@@ -10,7 +10,7 @@ class MainWindow(Window):
         self.__books_path.mkdir(exist_ok=True)
     
     # Overridable Functions
-    def setup(self):
+    def setup(self) -> None:
         # Title
         self.labelTitle.setText("Os Meus Livros de Receitas")
 
@@ -27,7 +27,7 @@ class MainWindow(Window):
         #QtWidgets.QLabel().setTe
         self.refresh()
     
-    def refresh(self):
+    def refresh(self) -> None:
         # Dropbox
         for book_path in self.__books_path.glob("*.json"):
             book_name = book_path.parts[-1].split(".")[0]

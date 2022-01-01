@@ -7,6 +7,6 @@ class Window(QtWidgets.QWidget):
         self.setup()
     
     # Overridable functions
-    def setup(self): pass
-    def refresh(self): pass
+    def setup(self) -> None: pass
+    def refresh(self) -> None: pass
         
