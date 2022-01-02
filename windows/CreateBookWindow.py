@@ -1,3 +1,4 @@
+from data_structures import Book
 from .Window import Window
 from Application import Application
 
@@ -17,8 +18,16 @@ class CreateBookWindow(Window):
     
     # Callbacks
     def create_book(self) -> None:
-        pass
+        book = self.get_inputs()
+        if self.validate_inputs(book):
+            book.save()
 
-    # 
-    def validate_inputs(self) -> None:
-        pass
+    #
+    def get_inputs(self) -> Book:
+        book = Book()
+        book.title = self.entryTitle.text()
+        book.author = self.entryAuthor.text()
+        return book
+
+    def validate_inputs(self, book: Book) -> bool:
+        return True
