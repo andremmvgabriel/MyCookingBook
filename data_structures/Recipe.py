@@ -32,3 +32,24 @@ class Recipe(Component):
 
     @components.setter
     def components(self, components: list) -> None: self._components = components
+
+    def wrap(self) -> dict:
+        data = super().wrap()
+        data["source"] = self._source
+        data["date"] = self._date
+        data["tags"] = self._tags
+        data["components"] = []
+        for component in self._components:
+            data["components"].append(component.wrap())
+        return data
+    
+    def unwrap(self, data: dict) -> None:
+        super().unwrap(data)
+        self._source = data["source"]
+        self._date = data["date"]
+        self._tags = data["tags"]
+        self._components = []
+        for component_data in data["components"]:
+            component = Component()
+            component.unwrap(component_data)
+            self._components.append(component)

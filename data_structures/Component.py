@@ -1,7 +1,9 @@
 import attr
 
+from .DataStructure import DataStructure
+
 @attr.s
-class Component:
+class Component(DataStructure):
     _name: str = attr.ib(init=False, default="")
     _description: str = attr.ib(init=False, default=None)
     #_image: 
@@ -33,3 +35,18 @@ class Component:
 
     @steps.setter
     def steps(self, steps: list) -> None: self._steps = steps
+
+    def wrap(self) -> dict:
+        data = super().wrap()
+        data["name"] = self._name
+        data["description"] = self._description,
+        data["ingredients"] = self._ingredients,
+        data["steps"] = self._steps
+        return data
+    
+    def unwrap(self, data: dict) -> None:
+        super().unwrap()
+        self._name = data["name"]
+        self._description = data["description"]
+        self._ingredients = data["ingredients"]
+        self._steps = data["steps"]
