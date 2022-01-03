@@ -21,6 +21,7 @@ class CreateBookWindow(Window):
         book = self.get_inputs()
         if self.validate_inputs(book):
             book.save()
+            self.close()
 
     #
     def get_inputs(self) -> Book:
