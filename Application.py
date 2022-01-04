@@ -14,10 +14,12 @@ class Application:
             # Local imports to create each window
             from windows import MainWindow
             from windows import CreateBookWindow
+            from windows import BookWindow
 
             # Windows creation
             cls.__windows["main"] = MainWindow()
             cls.__windows["create_book"] = CreateBookWindow()
+            cls.__windows["book"] = BookWindow()
 
             logging.debug("Windows setup completed.")
         

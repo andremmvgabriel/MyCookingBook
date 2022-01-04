@@ -37,10 +37,10 @@ class MainWindow(Window):
     
     # Callbacks
     def open_book(self):
-        print("openning")
+        Application.Windows.open("book")
+        self.close()
     
     def create_book(self):
-        print("creating")
         Application.Windows.open("create_book")
     
     def import_book(self):
