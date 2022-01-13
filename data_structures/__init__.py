@@ -1,4 +1,4 @@
 from .DataStructure import DataStructure
-from .Book import Book
-from .Component import Component
-from .Recipe import Recipe
+from .BookData import BookData
+from .RecipeData import RecipeData
+from .RecipeComponentData import RecipeComponentData

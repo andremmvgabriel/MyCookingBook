@@ -1,14 +1,12 @@
-import attr
+from typing import List
 
 from .DataStructure import DataStructure
 
-@attr.s
-class Component(DataStructure):
-    _name: str = attr.ib(init=False, default="")
-    _description: str = attr.ib(init=False, default=None)
-    #_image: 
-    _ingredients: list = attr.ib(init=False, default=list())
-    _steps: list = attr.ib(init=False, default=list())
+class RecipeComponentData(DataStructure):
+    _name: str = ""
+    _description: str = ""
+    _ingredients: List[str] = list()
+    _steps: List[str] = list()
 
     @property
     def name(self) -> str: return self._name
@@ -22,19 +20,17 @@ class Component(DataStructure):
     @description.setter
     def description(self, description: str) -> None: self._description = description
 
-    #def image(self)
-
     @property
-    def ingredients(self) -> list: return self._ingredients
+    def ingredients(self) -> List[str]: return self._ingredients
 
     @ingredients.setter
-    def ingredients(self, ingredients: list) -> None: self._ingredients = ingredients
+    def ingredients(self, ingredients: List[str]) -> None: self._ingredients = ingredients
 
     @property
-    def steps(self) -> list: return self._steps
+    def steps(self) -> List[str]: return self._steps
 
     @steps.setter
-    def steps(self, steps: list) -> None: self._steps = steps
+    def steps(self, steps: List[str]) -> None: self._steps = steps
 
     def wrap(self) -> dict:
         data = super().wrap()
@@ -45,7 +41,7 @@ class Component(DataStructure):
         return data
     
     def unwrap(self, data: dict) -> None:
-        super().unwrap()
+        super().unwrap(data)
         self._name = data["name"]
         self._description = data["description"]
         self._ingredients = data["ingredients"]
