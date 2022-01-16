@@ -3,7 +3,7 @@ from windows import Window
 from .ComponentDataWidget import ComponentDataWidget
 
 class ComponentsDataWidget(Window):
-    __is_collapsed: bool = True
+    __is_collapsed: bool = False
 
     def __init__(self) -> None:
         super().__init__("widgets/designs/ComponentsDataWidget.ui")
@@ -69,6 +69,34 @@ class ComponentsDataWidget(Window):
         self.frameControl.setHidden(True)
         self.frameSpacer.setHidden(True)
         self.frameComponents.setHidden(True)
+    
+    def open_data(self, data: dict) -> None:
+        spacer = self.scrollComponentsLayout.layout().takeAt(self.scrollComponentsLayout.layout().count()-1)
+
+        # Clears
+        for index in range(self.scrollComponentsLayout.layout().count())[::-1]:
+            self.scrollComponentsLayout.layout().takeAt(index)
+
+        # Writes
+        for component_data in data["components"]:
+            component = ComponentDataWidget()
+            component.open_data(component_data)
+            component.enter_view_mode()
+            self.scrollComponentsLayout.layout().addWidget(component)
+        
+        self.scrollComponentsLayout.layout().addItem(spacer)
+    
+    def enter_edit_mode(self):
+        self.frameControl.setHidden(False)
+
+        for index in range(self.scrollComponentsLayout.layout().count() - 1):
+            self.scrollComponentsLayout.layout().itemAt(index).widget().enter_edit_mode()
+
+    def enter_view_mode(self):
+        self.frameControl.setHidden(True)
+
+        for index in range(self.scrollComponentsLayout.layout().count() - 1):
+            self.scrollComponentsLayout.layout().itemAt(index).widget().enter_view_mode()
     
     def get_input_data(self):
         return { "components": [self.scrollComponentsLayout.layout().itemAt(index).widget().get_input_data() for index in range(self.scrollComponentsLayout.layout().count() - 1)] }

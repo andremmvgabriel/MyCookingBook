@@ -8,6 +8,7 @@ from datetime import datetime
 from PyQt5 import QtWidgets
 
 from data_structures import BookData
+from data_structures.RecipeData import RecipeData
 
 class BookSaveError(Exception): ...
 class BookInvalidDataError(Exception): ...
@@ -20,6 +21,9 @@ class Application:
 
         @classmethod
         def is_open(cls) -> bool: return cls.__is_open
+
+        @classmethod
+        def data(cls) -> BookData: return cls.__book_data
 
         @classmethod
         def open(cls, book_name: str) -> None:
@@ -37,7 +41,7 @@ class Application:
             if not cls.__is_open: return
             if not cls.__book_data.valid: raise BookInvalidDataError
             try:
-                path_to_book = Path(Application.get_books_path()) / (cls.__book_data.title + ".json")
+                path_to_book = Path(Application.get_books_path()) / (cls.__book_data.name + ".json")
                 with open(path_to_book, "w") as file:
                     json.dump(cls.__book_data.wrap(), file, indent=4)
             except FileNotFoundError:
@@ -58,6 +62,18 @@ class Application:
                 cls.close()
             except BookInvalidDataError:
                 raise BookSaveError
+        
+        @classmethod
+        def add_recipe(cls, recipe_data: RecipeData) -> None:
+            if not cls.__is_open: return
+            cls.__book_data.recipies.append(recipe_data)
+            cls.save()
+        
+        @classmethod
+        def delete_recipe(cls, recipe_data: RecipeData) -> None:
+            if not cls.__is_open: return
+            cls.__book_data.recipies.remove(recipe_data)
+            cls.save()
 
     class Windows:
         __windows: dict = dict()
@@ -71,19 +87,36 @@ class Application:
             from windows import CreateBookWindow
             from windows import BookWindow
             from windows import CreateRecipeWindow
+            from windows import RecipeWindow
 
             # Windows creation
             cls.__windows["main"] = MainWindow()
             cls.__windows["create_book"] = CreateBookWindow()
             cls.__windows["book"] = BookWindow()
             cls.__windows["create_recipe"] = CreateRecipeWindow()
+            cls.__windows["recipe"] = RecipeWindow()
 
             logging.debug("Windows setup completed.")
         
         @classmethod
         def open(cls, tag: str) -> None:
+            cls.refresh(tag)
             logging.debug(f"Open window: {tag}.")
             cls.__windows[tag].show()
+        
+        @classmethod
+        def refresh(cls, tag: str) -> None:
+            logging.debug(f"Refreshing window: {tag}.")
+            cls.__windows[tag].refresh()
+        
+        @classmethod
+        def close(cls, tag: str) -> None:
+            logging.debug(f"Closing window: {tag}.")
+            cls.__windows[tag].close()
+
+        @classmethod
+        def get(cls, tag: str):
+            return cls.__windows[tag]
 
     @classmethod
     def start(cls) -> None:

@@ -10,7 +10,7 @@ class Window(QtWidgets.QWidget):
     def setup(self) -> None: pass
     def refresh(self) -> None: pass
 
-    def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
-        print(self.width(), self.height())
-        super().resizeEvent(a0)
+    #def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
+    #    print(self.width(), self.height())
+    #    super().resizeEvent(a0)
         

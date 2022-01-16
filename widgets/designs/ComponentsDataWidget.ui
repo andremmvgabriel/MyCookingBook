@@ -82,13 +82,13 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>750</height>
+             <height>740</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>750</height>
+             <height>740</height>
             </size>
            </property>
            <property name="horizontalScrollBarPolicy">
@@ -103,7 +103,7 @@
               <x>0</x>
               <y>0</y>
               <width>923</width>
-              <height>748</height>
+              <height>738</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">

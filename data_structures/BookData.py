@@ -68,3 +68,4 @@ class BookData(DataStructure):
             self._recipies.append(recipe)
         self._tags = data["tags"]
         self._date = data["date"]
+        print()

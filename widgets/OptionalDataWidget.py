@@ -1,7 +1,7 @@
 from windows import Window
 
 class OptionalDataWidget(Window):
-    __is_collapsed: bool = True
+    __is_collapsed: bool = False
 
     def __init__(self) -> None:
         super().__init__("widgets/designs/OptionalDataWidget.ui")
@@ -74,6 +74,27 @@ class OptionalDataWidget(Window):
 
     def show_collapsed(self):
         self.frameContents.setHidden(True)
+    
+    def open_data(self, data: dict) -> None:
+        # Clears
+        for index in range(self.listTags.count())[::-1]:
+            self.listTags.takeItem(index)
+        
+        # Writes
+        self.entryAuthor.setText(data["author"])
+        self.entryDescription.setText(data["description"])
+        for tag in data["tags"]:
+            self.listTags.addItem(tag)
+    
+    def enter_edit_mode(self):
+        self.entryAuthor.setReadOnly(False)
+        self.entryDescription.setReadOnly(False)
+        self.frameEdit.setHidden(False)
+
+    def enter_view_mode(self):
+        self.entryAuthor.setReadOnly(True)
+        self.entryDescription.setReadOnly(True)
+        self.frameEdit.setHidden(True)
     
     def get_input_data(self):
         return {

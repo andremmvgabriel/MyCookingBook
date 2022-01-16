@@ -1,7 +1,7 @@
 from windows import Window
 
 class IngredientsDataWidget(Window):
-    __is_collapsed: bool = True
+    __is_collapsed: bool = False
 
     def __init__(self) -> None:
         super().__init__("widgets/designs/IngredientsDataWidget.ui")
@@ -51,7 +51,7 @@ class IngredientsDataWidget(Window):
         text = self.entryIngredient.text()
         text = text.capitalize()
         n_item = self.listIngredients.count()
-        text = f"{n_item}) {text}"
+        text = f"{n_item+1}) {text}"
         self.entryIngredient.setText("")
         self.listIngredients.addItem(text)
 
@@ -68,7 +68,7 @@ class IngredientsDataWidget(Window):
         for index in range(self.listIngredients.count()):
             text = self.listIngredients.item(index).text()
             _, ingredient = text.split(") ")
-            text = f"{index}) {ingredient}"
+            text = f"{index + 1}) {ingredient}"
             self.listIngredients.item(index).setText(text)
 
         # Deactivates once again the remove button
@@ -83,6 +83,21 @@ class IngredientsDataWidget(Window):
 
     def show_collapsed(self):
         self.frameContent.setHidden(True)
+    
+    def open_data(self, data: dict) -> None:
+        # Clears
+        for index in range(self.listIngredients.count())[::-1]:
+            self.listIngredients.takeItem(index)
+        
+        # Writes
+        for index in range(len(data["ingredients"])):
+            self.listIngredients.addItem(f"{index + 1}) {data['ingredients'][index]}")
+    
+    def enter_edit_mode(self):
+        self.frameEdit.setHidden(False)
+
+    def enter_view_mode(self):
+        self.frameEdit.setHidden(True)
     
     def get_input_data(self):
         ingredients_list = []

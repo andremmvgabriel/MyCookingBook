@@ -29,6 +29,6 @@ class CreateBookWindow(Window):
     #
     def get_inputs(self) -> BookData:
         book_data = BookData()
-        book_data.title = self.entryTitle.text()
+        book_data.name = self.entryTitle.text()
         book_data.author = self.entryAuthor.text()
         return book_data

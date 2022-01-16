@@ -42,9 +42,32 @@ class ComponentDataWidget(Window):
     def show_collapsed(self):
         self.frameContents.setHidden(True)
     
+    def open_data(self, data: dict) -> None:
+        self.buttonHeader.setText(data["name"])
+
+        self._ingredients.open_data(data)
+        self._ingredients.enter_view_mode()
+        self._steps.open_data(data)
+        self._steps.enter_view_mode()
+    
+    def enter_edit_mode(self):
+        self.buttonDelete.setHidden(False)
+
+        # Modules
+        self._ingredients.enter_edit_mode()
+        self._steps.enter_edit_mode()
+
+    def enter_view_mode(self):
+        self.buttonDelete.setHidden(True)
+
+        # Modules
+        self._ingredients.enter_view_mode()
+        self._steps.enter_view_mode()
+    
     def get_input_data(self):
         data = {}
         #data.update(self._optional.get_input_data())
+        data.update({"name": self.buttonHeader.text()})
         data.update(self._ingredients.get_input_data())
         data.update(self._steps.get_input_data())
         return data

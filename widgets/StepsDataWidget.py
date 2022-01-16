@@ -1,7 +1,7 @@
 from windows import Window
 
 class StepsDataWidget(Window):
-    __is_collapsed: bool = True
+    __is_collapsed: bool = False
 
     def __init__(self) -> None:
         super().__init__("widgets/designs/StepsDataWidget.ui")
@@ -51,7 +51,7 @@ class StepsDataWidget(Window):
         text = self.entryStep.text()
         text = text.capitalize()
         n_step = self.listSteps.count()
-        text = f"Passo {n_step}: {text}"
+        text = f"Passo {n_step+1}: {text}"
         self.entryStep.setText("")
         self.listSteps.addItem(text)
 
@@ -68,7 +68,7 @@ class StepsDataWidget(Window):
         for index in range(self.listSteps.count()):
             text = self.listSteps.item(index).text()
             _, step = text.split(": ")
-            text = f"Passo {index}: {step}"
+            text = f"Passo {index + 1}: {step}"
             self.listSteps.item(index).setText(text)
 
         # Deactivates once again the remove button
@@ -83,6 +83,21 @@ class StepsDataWidget(Window):
 
     def show_collapsed(self):
         self.frameContent.setHidden(True)
+    
+    def open_data(self, data: dict) -> None:
+        # Clears
+        for index in range(self.listSteps.count())[::-1]:
+            self.listSteps.takeItem(index)
+        
+        # Writes
+        for index in range(len(data["steps"])):
+            self.listSteps.addItem(f"Passo {index + 1}: {data['steps'][index]}")
+    
+    def enter_edit_mode(self):
+        self.frameEdit.setHidden(False)
+
+    def enter_view_mode(self):
+        self.frameEdit.setHidden(True)
     
     def get_input_data(self):
         steps_list = []

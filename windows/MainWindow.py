@@ -21,8 +21,6 @@ class MainWindow(Window):
 
         # Dropbox
         self.entryBook.currentIndexChanged.connect(self.book_selected)
-
-        self.refresh()
     
     def refresh(self) -> None:
         # Dropbox
