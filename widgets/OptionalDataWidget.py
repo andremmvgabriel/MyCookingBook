@@ -1,6 +1,3 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
-
 from windows import Window
 
 class OptionalDataWidget(Window):
@@ -73,14 +70,14 @@ class OptionalDataWidget(Window):
         else: self.show_expanded()
     
     def show_expanded(self):
-        self.contentOptional.setHidden(False)
+        self.frameContents.setHidden(False)
 
     def show_collapsed(self):
-        self.contentOptional.setHidden(True)
+        self.frameContents.setHidden(True)
     
     def get_input_data(self):
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
-            "tags": [self.listTags.item(index).text() for index in range(self.listTags.count() - 1)]
+            "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }

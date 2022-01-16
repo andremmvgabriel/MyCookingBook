@@ -1,3 +1,4 @@
+import json
 from Application import Application
 
 from .Window import Window
@@ -14,3 +15,5 @@ class BookWindow(Window):
     
     def create_recipe(self) -> None:
         Application.Windows.open("create_recipe")
+    
+    def refresh(self): pass

@@ -1,6 +1,7 @@
-from data_structures import Book
+import logging
+from data_structures import BookData
 from .Window import Window
-from Application import Application
+from Application import Application, BookSaveError
 
 class CreateBookWindow(Window):
     def __init__(self) -> None:
@@ -18,17 +19,16 @@ class CreateBookWindow(Window):
     
     # Callbacks
     def create_book(self) -> None:
-        book = self.get_inputs()
-        if self.validate_inputs(book):
-            book.save()
+        book_data = self.get_inputs()
+        try:
+            Application.Book.create(book_data)
             self.close()
+        except BookSaveError:
+            logging.warning("The new book inserted data is invalid.")
 
     #
-    def get_inputs(self) -> Book:
-        book = Book()
-        book.title = self.entryTitle.text()
-        book.author = self.entryAuthor.text()
-        return book
-
-    def validate_inputs(self, book: Book) -> bool:
-        return True
+    def get_inputs(self) -> BookData:
+        book_data = BookData()
+        book_data.title = self.entryTitle.text()
+        book_data.author = self.entryAuthor.text()
+        return book_data

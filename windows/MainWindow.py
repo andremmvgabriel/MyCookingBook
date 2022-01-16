@@ -1,13 +1,11 @@
+import logging
 from pathlib import Path
 from .Window import Window
 from Application import Application
 
 class MainWindow(Window):
-    __books_path: Path = Path("books")
-
     def __init__(self) -> None:
         super().__init__("windows/designs/MainWindow.ui")
-        self.__books_path.mkdir(exist_ok=True)
     
     # Overridable Functions
     def setup(self) -> None:
@@ -16,6 +14,7 @@ class MainWindow(Window):
 
         # Buttons
         self.buttonOpen.clicked.connect(self.open_book)
+        self.buttonOpen.setEnabled(False)
         self.buttonOpen.setText("Abrir")
         self.buttonCreate.clicked.connect(self.create_book)
         self.buttonImport.clicked.connect(self.import_book)
@@ -23,13 +22,12 @@ class MainWindow(Window):
         # Dropbox
         self.entryBook.currentIndexChanged.connect(self.book_selected)
 
-        from PyQt5 import QtWidgets
-        #QtWidgets.QLabel().setTe
         self.refresh()
     
     def refresh(self) -> None:
         # Dropbox
-        for book_path in self.__books_path.glob("*.json"):
+        
+        for book_path in Path(Application.get_books_path()).glob("*.json"):
             book_name = book_path.parts[-1].split(".")[0]
             self.entryBook.addItem(book_name)
         
@@ -37,6 +35,8 @@ class MainWindow(Window):
     
     # Callbacks
     def open_book(self):
+        book_name = self.entryBook.currentText()
+        Application.Book.open(book_name)
         Application.Windows.open("book")
         self.close()
     
@@ -47,5 +47,7 @@ class MainWindow(Window):
         pass
 
     def book_selected(self):
-        pass
+        book_name = self.entryBook.currentText()
+        self.buttonOpen.setEnabled(True if len(book_name) != 0 else False)
+        
 
