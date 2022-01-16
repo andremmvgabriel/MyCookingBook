@@ -47,7 +47,6 @@ class CreateRecipeWindow(Window):
         data.update(self._ingredients.get_input_data())
         data.update(self._steps.get_input_data())
         data.update(self._components.get_input_data())
-        print(data)
         return data
     
     def show(self) -> None:

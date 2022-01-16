@@ -22,6 +22,7 @@ class CreateBookWindow(Window):
         book_data = self.get_inputs()
         try:
             Application.Book.create(book_data)
+            Application.Windows.refresh("main")
             self.close()
         except BookSaveError:
             logging.warning("The new book inserted data is invalid.")
