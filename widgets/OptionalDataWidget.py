@@ -77,8 +77,7 @@ class OptionalDataWidget(Window):
     
     def open_data(self, data: dict) -> None:
         # Clears
-        for index in range(self.listTags.count())[::-1]:
-            self.listTags.takeItem(index)
+        self.clear()
         
         # Writes
         self.entryAuthor.setText(data["author"])
@@ -102,3 +101,9 @@ class OptionalDataWidget(Window):
             "description": self.entryDescription.toPlainText(),
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
+    
+    def clear(self):
+        self.entryAuthor.setText("")
+        self.entryDescription.setText("")
+        for index in range(self.listTags.count())[::-1]:
+            self.listTags.takeItem(index)

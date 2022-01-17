@@ -49,5 +49,13 @@ class CreateRecipeWindow(Window):
         data.update(self._components.get_input_data())
         return data
     
+    def clear(self):
+        self.entryName.setText("")
+        self._optional.clear()
+        self._ingredients.clear()
+        self._steps.clear()
+        self._components.clear()
+
     def show(self) -> None:
+        self.clear()
         self.showMaximized()

@@ -86,8 +86,7 @@ class IngredientsDataWidget(Window):
     
     def open_data(self, data: dict) -> None:
         # Clears
-        for index in range(self.listIngredients.count())[::-1]:
-            self.listIngredients.takeItem(index)
+        self.clear()
         
         # Writes
         for index in range(len(data["ingredients"])):
@@ -108,3 +107,7 @@ class IngredientsDataWidget(Window):
             ingredients_list.append(ingredient)
 
         return { "ingredients": ingredients_list }
+    
+    def clear(self):
+        for index in range(self.listIngredients.count())[::-1]:
+            self.listIngredients.takeItem(index)

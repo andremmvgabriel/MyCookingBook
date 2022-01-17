@@ -86,8 +86,7 @@ class StepsDataWidget(Window):
     
     def open_data(self, data: dict) -> None:
         # Clears
-        for index in range(self.listSteps.count())[::-1]:
-            self.listSteps.takeItem(index)
+        self.clear()
         
         # Writes
         for index in range(len(data["steps"])):
@@ -109,3 +108,7 @@ class StepsDataWidget(Window):
             steps_list.append(step)
         
         return { "steps": steps_list }
+    
+    def clear(self):
+        for index in range(self.listSteps.count())[::-1]:
+            self.listSteps.takeItem(index)
