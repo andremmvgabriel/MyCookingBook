@@ -1,3 +1,8 @@
+from PIL import Image, ImageQt
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
+from PyQt5.QtGui import QPixmap
+
 from windows import Window
 
 class OptionalDataWidget(Window):
@@ -14,6 +19,8 @@ class OptionalDataWidget(Window):
         self.buttonAddTag.clicked.connect(self.add_tag)
         self.buttonRemoveTag.setText("Remover")
         self.buttonRemoveTag.clicked.connect(self.remove_tag)
+        self.buttonSelectImage.setText("Selecionar imagem")
+        self.buttonSelectImage.clicked.connect(self.select_image)
 
         self.buttonAddTag.setEnabled(False)
         self.buttonRemoveTag.setEnabled(False)
@@ -65,6 +72,13 @@ class OptionalDataWidget(Window):
         # Deactivates once again the remove button
         self.buttonRemoveTag.setEnabled(False)
     
+    def select_image(self):
+        file_name = QFileDialog.getOpenFileName(self, "Open file", "", "image files (*.png *.jpg *.icon *.gif)")
+
+        if file_name[0] == "": return
+
+        self.set_image_into_qpixmap(file_name[0])
+    
     def setup_view(self):
         if self.__is_collapsed: self.show_collapsed()
         else: self.show_expanded()
@@ -84,21 +98,32 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText(data["description"])
         for tag in data["tags"]:
             self.listTags.addItem(tag)
+        self.set_image_into_qpixmap(data["image"])
     
     def enter_edit_mode(self):
         self.entryAuthor.setReadOnly(False)
         self.entryDescription.setReadOnly(False)
         self.frameEdit.setHidden(False)
+        self.buttonSelectImage.setHidden(False)
 
     def enter_view_mode(self):
         self.entryAuthor.setReadOnly(True)
         self.entryDescription.setReadOnly(True)
         self.frameEdit.setHidden(True)
+        self.buttonSelectImage.setHidden(True)
+    
+    def set_image_into_qpixmap(self, image_path) -> None:
+        if not image_path: return
+        image = Image.open(image_path)
+        #image = image.resize((self.labelImage.maximumWidth(), self.labelImage.maximumHeight()))
+        imageqt = ImageQt.ImageQt(image)
+        self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
     
     def get_input_data(self):
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
+            "image": True if self.labelImage.pixmap() else False,
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
     
@@ -107,3 +132,5 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText("")
         for index in range(self.listTags.count())[::-1]:
             self.listTags.takeItem(index)
+        self.labelImage.setPixmap(None)
+        

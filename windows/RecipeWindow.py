@@ -116,6 +116,9 @@ class RecipeWindow(Window):
         data.update(self._ingredients.get_input_data())
         data.update(self._steps.get_input_data())
         data.update(self._components.get_input_data())
+
+        data["image"] = f"books/{Application.Book.data().name}/{data['name']}.png" if data["image"] is True else None
+
         return data
     
     def enter_edit_mode(self):
