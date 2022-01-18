@@ -7,6 +7,7 @@ class RecipeData(DataStructure):
     _name: str = ""
     _author: str = ""
     _description: str = ""
+    _image: list = list()
     _tags: List[str] = list()
     _ingredients: List[str] = list()
     _steps: List[str] = list()
@@ -24,6 +25,12 @@ class RecipeData(DataStructure):
 
     @description.setter
     def description(self, description: str) -> None: self._description = description
+
+    @property
+    def image(self) -> list: return self._image
+
+    @image.setter
+    def image(self, bytearray: list) -> None: self._image = bytearray
 
     @property
     def ingredients(self) -> List[str]: return self._ingredients
@@ -65,6 +72,7 @@ class RecipeData(DataStructure):
         data = super().wrap()
         data["name"] = self._name
         data["description"] = self._description
+        data["image"] = self._image
         data["ingredients"] = self._ingredients
         data["steps"] = self._steps
         data["author"] = self._author
@@ -79,6 +87,7 @@ class RecipeData(DataStructure):
         super().unwrap(data)
         self._name = data["name"]
         self._description = data["description"]
+        self._image = data["image"]
         self._ingredients = data["ingredients"]
         self._steps = data["steps"]
         self._author = data["author"]

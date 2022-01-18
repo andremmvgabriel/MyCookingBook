@@ -1,3 +1,5 @@
+import io
+import logging
 from PIL import Image, ImageQt
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
@@ -77,7 +79,7 @@ class OptionalDataWidget(Window):
 
         if file_name[0] == "": return
 
-        self.set_image_into_qpixmap(file_name[0])
+        self.set_image_file_into_qpixmap(file_name[0])
     
     def setup_view(self):
         if self.__is_collapsed: self.show_collapsed()
@@ -98,7 +100,7 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText(data["description"])
         for tag in data["tags"]:
             self.listTags.addItem(tag)
-        self.set_image_into_qpixmap(data["image"])
+        self.set_image_bytes_into_qpixmap(data["image"])
     
     def enter_edit_mode(self):
         self.entryAuthor.setReadOnly(False)
@@ -112,18 +114,11 @@ class OptionalDataWidget(Window):
         self.frameEdit.setHidden(True)
         self.buttonSelectImage.setHidden(True)
     
-    def set_image_into_qpixmap(self, image_path) -> None:
-        if not image_path: return
-        image = Image.open(image_path)
-        #image = image.resize((self.labelImage.maximumWidth(), self.labelImage.maximumHeight()))
-        imageqt = ImageQt.ImageQt(image)
-        self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
-    
-    def get_input_data(self):
+    def get_input_data(self):       
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
-            "image": True if self.labelImage.pixmap() else False,
+            "image": self.get_image_bytes_from_qpixmap(),
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
     
@@ -132,5 +127,20 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText("")
         for index in range(self.listTags.count())[::-1]:
             self.listTags.takeItem(index)
-        self.labelImage.setPixmap(None)
-        
+        self.set_image_file_into_qpixmap("utils/NoImageIcon.png")
+    
+    def set_image_file_into_qpixmap(self, path: str) -> None:
+        self.labelImage.setPixmap(QPixmap(path).copy())
+    
+    def set_image_bytes_into_qpixmap(self, bytearray: list) -> None:
+        image = Image.open(io.BytesIO(bytearray))
+        imageqt = ImageQt.ImageQt(image)
+        self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
+    
+    def get_image_bytes_from_qpixmap(self):
+        from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
+        ba = QByteArray()
+        buff = QBuffer(ba)
+        buff.open(QBuffer.WriteOnly)
+        self.labelImage.pixmap().save(buff, "PNG")
+        return ba.data()
