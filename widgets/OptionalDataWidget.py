@@ -1,5 +1,4 @@
 import io
-import logging
 from PIL import Image, ImageQt
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
@@ -114,11 +113,11 @@ class OptionalDataWidget(Window):
         self.frameEdit.setHidden(True)
         self.buttonSelectImage.setHidden(True)
     
-    def get_input_data(self):       
+    def get_input_data(self):
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
-            "image": self.get_image_bytes_from_qpixmap(),
+            "image": self.get_image_bytes_from_qpixmap().decode("latin1"),
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
     
@@ -130,17 +129,28 @@ class OptionalDataWidget(Window):
         self.set_image_file_into_qpixmap("utils/NoImageIcon.png")
     
     def set_image_file_into_qpixmap(self, path: str) -> None:
-        self.labelImage.setPixmap(QPixmap(path).copy())
-    
-    def set_image_bytes_into_qpixmap(self, bytearray: list) -> None:
-        image = Image.open(io.BytesIO(bytearray))
+        #self.labelImage.setPixmap(QPixmap(path).copy())
+
+        image = Image.open(path)
+        #image = image.resize((self.labelImage.maximumWidth(), self.labelImage.maximumHeight()))
         imageqt = ImageQt.ImageQt(image)
         self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
     
-    def get_image_bytes_from_qpixmap(self):
-        from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
+    def set_image_bytes_into_qpixmap(self, bytearray: bytes) -> None:
+        #bytearray = bytes(bytearray, encoding="latin1")
+        #image = Image.open(io.BytesIO(bytearray))
+        #imageqt = ImageQt.ImageQt(image)
+        #self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
+        
+        bytearray = bytes(bytearray, encoding="latin1")
+        bytes_array = QByteArray(bytearray)
+        pix = QPixmap()
+        pix.loadFromData(bytes_array, "PNG")
+        self.labelImage.setPixmap(pix.copy())
+    
+    def get_image_bytes_from_qpixmap(self) -> bytes:
         ba = QByteArray()
         buff = QBuffer(ba)
-        buff.open(QBuffer.WriteOnly)
+        buff.open(QIODevice.OpenModeFlag.WriteOnly)
         self.labelImage.pixmap().save(buff, "PNG")
         return ba.data()
