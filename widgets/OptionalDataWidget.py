@@ -1,7 +1,17 @@
+import io
+from PIL import Image, ImageQt
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
+from PyQt5.QtGui import QPixmap
+
 from windows import Window
+
+import numpy as np
+import json
 
 class OptionalDataWidget(Window):
     __is_collapsed: bool = False
+    __max_size: int = 400
 
     def __init__(self) -> None:
         super().__init__("widgets/designs/OptionalDataWidget.ui")
@@ -14,6 +24,8 @@ class OptionalDataWidget(Window):
         self.buttonAddTag.clicked.connect(self.add_tag)
         self.buttonRemoveTag.setText("Remover")
         self.buttonRemoveTag.clicked.connect(self.remove_tag)
+        self.buttonSelectImage.setText("Selecionar imagem")
+        self.buttonSelectImage.clicked.connect(self.select_image)
 
         self.buttonAddTag.setEnabled(False)
         self.buttonRemoveTag.setEnabled(False)
@@ -65,6 +77,14 @@ class OptionalDataWidget(Window):
         # Deactivates once again the remove button
         self.buttonRemoveTag.setEnabled(False)
     
+    def select_image(self):
+        file_name = QFileDialog.getOpenFileName(self, "Open file", "", "image files (*.png *.jpg *.icon *.gif)")
+
+        if file_name[0] == "": return
+
+        image = Image.open(file_name[0])
+        self.set_image_into_qpixmap(image)
+    
     def setup_view(self):
         if self.__is_collapsed: self.show_collapsed()
         else: self.show_expanded()
@@ -77,28 +97,85 @@ class OptionalDataWidget(Window):
     
     def open_data(self, data: dict) -> None:
         # Clears
-        for index in range(self.listTags.count())[::-1]:
-            self.listTags.takeItem(index)
+        self.clear()
         
         # Writes
         self.entryAuthor.setText(data["author"])
         self.entryDescription.setText(data["description"])
         for tag in data["tags"]:
             self.listTags.addItem(tag)
+        self.set_image_bytes_into_qpixmap(data["image"])
     
     def enter_edit_mode(self):
         self.entryAuthor.setReadOnly(False)
         self.entryDescription.setReadOnly(False)
         self.frameEdit.setHidden(False)
+        self.buttonSelectImage.setHidden(False)
 
     def enter_view_mode(self):
         self.entryAuthor.setReadOnly(True)
         self.entryDescription.setReadOnly(True)
         self.frameEdit.setHidden(True)
+        self.buttonSelectImage.setHidden(True)
     
     def get_input_data(self):
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
+            "image": self.get_image_bytes_from_qpixmap().decode("latin1"),
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
+    
+    def clear(self):
+        self.entryAuthor.setText("")
+        self.entryDescription.setText("")
+        for index in range(self.listTags.count())[::-1]:
+            self.listTags.takeItem(index)
+        image = Image.open("utils/NoImageIcon.png")
+        self.set_image_into_qpixmap(image)
+    
+    def set_image_into_qpixmap(self, image: Image) -> None:
+        image = self.adjust_image_size(image)
+        imageqt = ImageQt.ImageQt(image)
+        self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
+    
+    def set_image_bytes_into_qpixmap(self, bytearray: bytes) -> None:
+        bytearray_decoded = bytes(bytearray, encoding="latin1")
+        bytes_array = QByteArray(bytearray_decoded)
+        pix = QPixmap()
+        pix.loadFromData(bytes_array, "PNG")
+        self.labelImage.setPixmap(pix.copy())
+
+    def get_image_bytes_from_qpixmap(self) -> bytes:
+        ba = QByteArray()
+        buff = QBuffer(ba)
+        buff.open(QIODevice.OpenModeFlag.WriteOnly)
+        self.labelImage.pixmap().save(buff, "PNG")
+        return ba.data()
+    
+    def adjust_image_size(self, image: Image) -> Image:
+        width, height = image.size
+
+        if width == height: return image
+
+        new_size = (width if width > height else height, width if width > height else height)
+           
+        new_image = Image.new(
+            "RGB",
+            new_size,
+            color="white"
+        )
+
+        new_image.paste(
+            image,
+            (
+                (new_size[0]-width) // 2,
+                (new_size[1]-height) // 2
+            )
+        )
+            
+        return new_image.resize((self.__max_size, self.__max_size))
+    
+    def create_image_from_list(self, list_data: list) -> Image:
+        return Image.fromarray( np.array(list_data, dtype="uint8") )
+

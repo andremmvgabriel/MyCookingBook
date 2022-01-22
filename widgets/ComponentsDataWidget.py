@@ -71,11 +71,10 @@ class ComponentsDataWidget(Window):
         self.frameComponents.setHidden(True)
     
     def open_data(self, data: dict) -> None:
-        spacer = self.scrollComponentsLayout.layout().takeAt(self.scrollComponentsLayout.layout().count()-1)
-
         # Clears
-        for index in range(self.scrollComponentsLayout.layout().count())[::-1]:
-            self.scrollComponentsLayout.layout().takeAt(index)
+        self.clear()
+        
+        spacer = self.scrollComponentsLayout.layout().takeAt(0)
 
         # Writes
         for component_data in data["components"]:
@@ -100,3 +99,11 @@ class ComponentsDataWidget(Window):
     
     def get_input_data(self):
         return { "components": [self.scrollComponentsLayout.layout().itemAt(index).widget().get_input_data() for index in range(self.scrollComponentsLayout.layout().count() - 1)] }
+    
+    def clear(self):
+        spacer = self.scrollComponentsLayout.layout().takeAt(self.scrollComponentsLayout.layout().count()-1)
+
+        for index in range(self.scrollComponentsLayout.layout().count())[::-1]:
+            self.scrollComponentsLayout.layout().takeAt(index).widget().setParent(None)
+        
+        self.scrollComponentsLayout.layout().addItem(spacer)

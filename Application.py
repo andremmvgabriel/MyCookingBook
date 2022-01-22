@@ -66,6 +66,9 @@ class Application:
         @classmethod
         def add_recipe(cls, recipe_data: RecipeData) -> None:
             if not cls.__is_open: return
+            for tag in recipe_data.tags:
+                if tag not in cls.__book_data.tags:
+                    cls.__book_data.tags.append(tag)
             cls.__book_data.recipies.append(recipe_data)
             cls.save()
         
