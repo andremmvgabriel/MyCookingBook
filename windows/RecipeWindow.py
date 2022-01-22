@@ -9,7 +9,7 @@ from widgets.StepsDataWidget import StepsDataWidget
 from datetime import datetime
 
 class RecipeWindow(Window):
-    __recipe: RecipeData = None
+    _recipe: RecipeData = None
 
     def __init__(self) -> None:
         self._optional = OptionalDataWidget()
@@ -53,8 +53,8 @@ class RecipeWindow(Window):
         self.frameEditOptions.setHidden(True)
     
     def open_recipe(self, recipe: RecipeData):
-        self.__recipe = recipe
-        self.open_data(self.__recipe.wrap())
+        self._recipe = recipe
+        self.open_data(self._recipe.wrap())
     
     def open_data(self, data: dict) -> None:
         self.entryName.setText(data["name"])
@@ -74,7 +74,7 @@ class RecipeWindow(Window):
         self.frameEditOptions.setHidden(False)
 
         # Data
-        self.__recipe.unwrap(self.get_input_data())
+        self._recipe.unwrap(self.get_input_data())
         Application.Book.save()
         self.enter_view_mode()
     
@@ -83,14 +83,14 @@ class RecipeWindow(Window):
         self.enter_view_mode()
 
         # Data
-        self.open_data(self.__recipe.wrap())
+        self.open_data(self._recipe.wrap())
     
     def delete_recipe(self):
         # Frames
         self.frameDelete.setHidden(False)
     
     def confirm_delete(self):
-        Application.Book.delete_recipe(self.__recipe)
+        Application.Book.delete_recipe(self._recipe)
         Application.Windows.open("book")
         self.close()
 
@@ -116,8 +116,6 @@ class RecipeWindow(Window):
         data.update(self._ingredients.get_input_data())
         data.update(self._steps.get_input_data())
         data.update(self._components.get_input_data())
-
-        data["image"] = f"books/{Application.Book.data().name}/{data['name']}.png" if data["image"] is True else None
 
         return data
     
