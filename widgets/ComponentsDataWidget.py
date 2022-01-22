@@ -102,7 +102,6 @@ class ComponentsDataWidget(Window):
     
     def clear(self):
         spacer = self.scrollComponentsLayout.layout().takeAt(self.scrollComponentsLayout.layout().count()-1)
-        print("TESRFAS")
 
         for index in range(self.scrollComponentsLayout.layout().count())[::-1]:
             self.scrollComponentsLayout.layout().takeAt(index).widget().setParent(None)

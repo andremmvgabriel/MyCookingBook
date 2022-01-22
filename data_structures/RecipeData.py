@@ -72,8 +72,8 @@ class RecipeData(DataStructure):
         data = super().wrap()
         data["name"] = self._name
         data["description"] = self._description
-        #data["image"] = self._image
-        data["image"] = self._image.decode("latin1")
+        data["image"] = self._image
+        #data["image"] = self._image.decode("latin1")
         data["ingredients"] = self._ingredients
         data["steps"] = self._steps
         data["author"] = self._author
@@ -88,8 +88,8 @@ class RecipeData(DataStructure):
         super().unwrap(data)
         self._name = data["name"]
         self._description = data["description"]
-        #self._image = data["image"]
-        self._image = bytes(data["image"], encoding="latin1")
+        self._image = data["image"]
+        #self._image = bytes(data["image"], encoding="latin1")
         self._ingredients = data["ingredients"]
         self._steps = data["steps"]
         self._author = data["author"]

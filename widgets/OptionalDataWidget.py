@@ -6,6 +6,9 @@ from PyQt5.QtGui import QPixmap
 
 from windows import Window
 
+import numpy as np
+import json
+
 class OptionalDataWidget(Window):
     __is_collapsed: bool = False
 
@@ -78,7 +81,8 @@ class OptionalDataWidget(Window):
 
         if file_name[0] == "": return
 
-        self.set_image_file_into_qpixmap(file_name[0])
+        image = Image.open(file_name[0])
+        self.set_image_into_qpixmap(image)
     
     def setup_view(self):
         if self.__is_collapsed: self.show_collapsed()
@@ -99,7 +103,8 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText(data["description"])
         for tag in data["tags"]:
             self.listTags.addItem(tag)
-        self.set_image_bytes_into_qpixmap(data["image"])
+        image = self.create_image_from_list(data["image"])
+        self.set_image_into_qpixmap(image)
     
     def enter_edit_mode(self):
         self.entryAuthor.setReadOnly(False)
@@ -117,7 +122,7 @@ class OptionalDataWidget(Window):
         return {
             "author": self.entryAuthor.text(),
             "description": self.entryDescription.toPlainText(),
-            "image": self.get_image_bytes_from_qpixmap().decode("latin1"),
+            "image": self.get_image_from_qpixmap(),
             "tags": [self.listTags.item(index).text() for index in range(self.listTags.count())]
         }
     
@@ -126,12 +131,12 @@ class OptionalDataWidget(Window):
         self.entryDescription.setText("")
         for index in range(self.listTags.count())[::-1]:
             self.listTags.takeItem(index)
-        self.set_image_file_into_qpixmap("utils/NoImageIcon.png")
+        image = Image.open("utils/NoImageIcon.png")
+        self.set_image_into_qpixmap(image)
     
-    def set_image_file_into_qpixmap(self, path: str) -> None:
+    def set_image_into_qpixmap(self, image: Image) -> None:
         #self.labelImage.setPixmap(QPixmap(path).copy())
 
-        image = Image.open(path)
         #image = image.resize((self.labelImage.maximumWidth(), self.labelImage.maximumHeight()))
         imageqt = ImageQt.ImageQt(image)
         self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
@@ -142,15 +147,33 @@ class OptionalDataWidget(Window):
         #imageqt = ImageQt.ImageQt(image)
         #self.labelImage.setPixmap(QPixmap.fromImage(imageqt).copy())
         
-        bytearray = bytes(bytearray, encoding="latin1")
-        bytes_array = QByteArray(bytearray)
-        pix = QPixmap()
-        pix.loadFromData(bytes_array, "PNG")
-        self.labelImage.setPixmap(pix.copy())
-    
+        #bytearray_decoded = bytes(bytearray, encoding="latin1")
+        #bytes_array = QByteArray(bytearray_decoded)
+        #pix = QPixmap()
+        #pix.loadFromData(bytes_array, "PNG")
+        #self.labelImage.setPixmap(pix.copy())
+
+        #bytearray_decoded = bytes(bytearray, encoding="latin1")
+        #image = Image.open(io.BytesIO(bytearray_decoded))
+        #self.set_image_into_qpixmap(image)
+        image_array = np.array(json.loads(bytearray), dtype="uint8")
+        image = Image.fromarray(image_array)
+        self.set_image_into_qpixmap(image)
+
     def get_image_bytes_from_qpixmap(self) -> bytes:
         ba = QByteArray()
         buff = QBuffer(ba)
         buff.open(QIODevice.OpenModeFlag.WriteOnly)
         self.labelImage.pixmap().save(buff, "PNG")
-        return ba.data()
+        #return ba.data()
+        image = Image.open(io.BytesIO(ba.data()))
+        #return np.array(image).tolist()
+        return json.dumps(np.array(image).tolist())
+    
+    def get_image_from_qpixmap(self):
+        image_from_pix = Image.fromqpixmap(self.labelImage.pixmap())
+        return np.array(image_from_pix).tolist()
+    
+    def create_image_from_list(self, list_data: list) -> Image:
+        return Image.fromarray( np.array(list_data, dtype="uint8") )
+

@@ -1,3 +1,7 @@
 PyQt5
 fpdf
 Pillow
+numpy
+notebook
+jupyterlab
+voila
