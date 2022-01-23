@@ -1,4 +1,4 @@
-from pdf_extractors import PortraitPDF
+from pdf_generator import PortraitPDF
 
 if __name__ == "__main__":
     pdf = PortraitPDF()
