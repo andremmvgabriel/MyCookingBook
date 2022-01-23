@@ -23,6 +23,8 @@ class MainWindow(Window):
         self.entryBook.currentIndexChanged.connect(self.book_selected)
     
     def refresh(self) -> None:
+        self.entryBook.clear()
+
         # Dropbox
         
         for book_path in Path(Application.get_books_path()).glob("*.json"):
@@ -47,5 +49,3 @@ class MainWindow(Window):
     def book_selected(self):
         book_name = self.entryBook.currentText()
         self.buttonOpen.setEnabled(True if len(book_name) != 0 else False)
-        
-
