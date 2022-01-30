@@ -158,25 +158,21 @@ class Application:
     
     @classmethod
     def _setup(cls):
-        # Gets the app configurations
         cls._load_configurations()
-
-        # Creates the needed directories
         cls._setup_directories()
+    
+    @classmethod
+    def _init(cls):
+        app = QtWidgets.QApplication(sys.argv)
+        cls.Windows.setup()
+        cls.Windows.open("main")
+        app.exec_()
 
     @classmethod
     def start(cls) -> None:
         logging.info("Starting application: My Cooking Book")
-
         cls._setup()
-
-        app = QtWidgets.QApplication(sys.argv)
-        
-        cls.Windows.setup()
-        cls.Windows.open("main")
-
-        app.exec_()
-
+        cls._init()
         logging.info("Closed application.")
     
     @classmethod
