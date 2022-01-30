@@ -2,23 +2,7 @@ import logging
 from pathlib import Path
 from .Window import Window
 from Application import Application
-
-class MainWindowTranslator:
-    __title_label: dict = {
-        "English": "My Cooking Books",
-        "Portuguese": "Os Meus Livros de Receitas"
-    }
-
-    @property
-    def title_label(self): return self.__title_label[Application.language]
-
-    __open_button: dict = {
-        "English": "Open",
-        "Portuguese": "Abrir"
-    }
-
-    @property
-    def open_button(self): return self.__open_button[Application.language]
+from windows_translators import MainWindowTranslator
 
 class MainWindow(Window):
     __translator: MainWindowTranslator = MainWindowTranslator()
@@ -28,18 +12,30 @@ class MainWindow(Window):
     
     # Overridable Functions
     def setup(self) -> None:
-        # Title
-        self.labelTitle.setText(self.__translator.title_label)
+        self.setup_language()
 
         # Buttons
         self.buttonOpen.clicked.connect(self.open_book)
         self.buttonOpen.setEnabled(False)
-        self.buttonOpen.setText(self.__translator.open_button)
         self.buttonCreate.clicked.connect(self.create_book)
         self.buttonImport.clicked.connect(self.import_book)
 
         # Dropbox
         self.entryBook.currentIndexChanged.connect(self.book_selected)
+    
+    def setup_language(self):
+        # Labels
+        self.labelTitle.setText(self.__translator.title_label)
+        # Idiom label
+
+        # Buttons
+        self.buttonOpen.setText(self.__translator.open_button)
+        self.buttonCreate.setText(self.__translator.create_button)
+        self.buttonImport.setText(self.__translator.import_button)
+        # More options button
+
+        # Dropbox
+        # Idioms dropbox
     
     def refresh(self) -> None:
         self.entryBook.clear()

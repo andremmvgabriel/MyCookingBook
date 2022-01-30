@@ -1,6 +1,10 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 
+from utils import Translator
+
 class Window(QtWidgets.QWidget):
+    _translator: Translator
+    
     def __init__(self, ui_file: str) -> None:
         super(Window, self).__init__()
         uic.loadUi(ui_file, self)

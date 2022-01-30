@@ -1,0 +1,1 @@
+from .MainWindowTranslator import MainWindowTranslator
