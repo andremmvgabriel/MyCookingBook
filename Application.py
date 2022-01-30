@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import logging
@@ -12,8 +13,12 @@ from data_structures.RecipeData import RecipeData
 
 class BookSaveError(Exception): ...
 class BookInvalidDataError(Exception): ...
+
 class Application:
-    __books_path: str = Path.cwd() / "books"
+    __language: str
+    __pdfs_path: str
+    __books_path: str
+    __temporary_path: str = Path.cwd() / "temp"
 
     class Book:
         __book_data: BookData = BookData()
@@ -120,13 +125,50 @@ class Application:
         @classmethod
         def get(cls, tag: str):
             return cls.__windows[tag]
+    
+    @classmethod
+    def _create_default_configurations(cls):
+        with open("configuration.json", "w") as file:
+            json.dump({
+                "language": "English",
+                "save_pdfs_directory": str(Path.cwd() / "pdfs"),
+                "save_books_directory": str(Path.cwd() / "books")
+            }, file, indent=4)
+    
+    @classmethod
+    def _load_configurations(cls):
+        if not os.path.exists("configuration.json"):
+            cls._create_default_configurations()
+        
+        try:
+            with open("configuration.json", "r") as file:
+                data = json.load(file)
+
+                cls.__language = data["language"]
+                cls.__pdfs_path = data["save_pdfs_directory"] 
+                cls.__books_path = data["save_books_directory"]
+        except KeyError:
+            logging.error("Configuration is missing a parameter. Fix the issue or delete the current configuration file (a default one will be created).")
+    
+    @classmethod
+    def _setup_directories(cls):
+        Path(cls.__pdfs_path).mkdir(exist_ok=True)
+        Path(cls.__books_path).mkdir(exist_ok=True)
+        Path(cls.__temporary_path).mkdir(exist_ok=True)
+    
+    @classmethod
+    def _setup(cls):
+        # Gets the app configurations
+        cls._load_configurations()
+
+        # Creates the needed directories
+        cls._setup_directories()
 
     @classmethod
     def start(cls) -> None:
         logging.info("Starting application: My Cooking Book")
 
-        # Creates the needed directories
-        Path(cls.__books_path).mkdir(exist_ok=True)
+        cls._setup()
 
         app = QtWidgets.QApplication(sys.argv)
         

@@ -137,3 +137,6 @@ logs/
 books/
 output/
 pdfs/
+temp/
+
+configuration.json
