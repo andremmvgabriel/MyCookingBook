@@ -1,6 +1,7 @@
 from windows import Window
 
 from .ComponentDataWidget import ComponentDataWidget
+from pdf_generator import PDF
 
 class ComponentsDataWidget(Window):
     __is_collapsed: bool = False
@@ -107,3 +108,24 @@ class ComponentsDataWidget(Window):
             self.scrollComponentsLayout.layout().takeAt(index).widget().setParent(None)
         
         self.scrollComponentsLayout.layout().addItem(spacer)
+    
+
+
+
+
+    def write_in_pdf(self, pdf: PDF):
+        if self.scrollComponentsLayout.layout().count() - 1 == 0: return
+        
+        pdf.set_font(pdf.font_family, "B", 16)
+
+        pdf.cell(0, 10, "III. Components:", 1, 1, "L")
+
+        pdf.set_font(pdf.font_family, "", 12)
+        
+        for index in range(self.scrollComponentsLayout.layout().count() - 1):
+            pdf.ln(2)
+            pdf.set_font(pdf.font_family, "B", 14)
+            pdf.cell(15, 8, f"III.C{index})", 1)
+            self.scrollComponentsLayout.layout().itemAt(index).widget().write_in_pdf(pdf)
+
+        pdf.ln(5)

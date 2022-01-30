@@ -112,6 +112,7 @@ class RecipeWindow(Window):
         self._optional.write_in_pdf(pdf)
         self._ingredients.write_in_pdf(pdf)
         self._steps.write_in_pdf(pdf)
+        self._components.write_in_pdf(pdf)
         pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
     
     # def write_in_pdf

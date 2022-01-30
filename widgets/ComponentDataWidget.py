@@ -4,6 +4,8 @@ from .OptionalDataWidget import OptionalDataWidget
 from .IngredientsDataWidget import IngredientsDataWidget
 from .StepsDataWidget import StepsDataWidget
 
+from pdf_generator import PDF
+
 class ComponentDataWidget(Window):
     __is_collapsed: bool = True
     
@@ -71,3 +73,20 @@ class ComponentDataWidget(Window):
         data.update(self._ingredients.get_input_data())
         data.update(self._steps.get_input_data())
         return data
+    
+
+
+
+
+
+    def write_in_pdf(self, pdf: PDF):
+        pdf.set_font(pdf.font_family, "B", 14)
+
+        pdf.cell(0, 8, f"{self.buttonHeader.text()}", 1, 1, "L")
+
+        pdf.set_font(pdf.font_family, "", 12)
+
+        self._ingredients.write_int_pdf_as_component(pdf)
+        self._steps.write_int_pdf_as_component(pdf)
+
+        pdf.ln(5)

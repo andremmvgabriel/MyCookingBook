@@ -133,3 +133,13 @@ class IngredientsDataWidget(Window):
 
         pdf.ln(5)
     
+    def write_int_pdf_as_component(self, pdf: PDF):
+        pdf.cell(0, 10, "Ingredients:", 1, 1, "C")
+        pdf.set_font(pdf.font_family, "", 12)
+
+        for index in range(self.listIngredients.count()):
+            pdf.ln(2)
+            text = self.listIngredients.item(index).text()
+            pdf.multi_cell(0, 5, text, 1)
+        
+        pdf.ln(5)
