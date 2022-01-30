@@ -224,11 +224,6 @@ class OptionalDataWidget(Window):
         init_y = pdf.y
 
         pdf.set_xy(130, img_y)
-        #pdf.image("utils/NoImageIcon.png", w=70, h=70)
-
-        data = self.get_image_bytes_from_qpixmap()
-
-        #img = Image.frombytes("RGB", (200, 200), data)
         img = Image.fromqpixmap(self.labelImage.pixmap())
         img.save("temp/img.png")
         pdf.image("temp/img.png", w=70, h=70)
