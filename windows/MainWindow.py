@@ -3,19 +3,38 @@ from pathlib import Path
 from .Window import Window
 from Application import Application
 
+class MainWindowTranslator:
+    __title_label: dict = {
+        "English": "My Cooking Books",
+        "Portuguese": "Os Meus Livros de Receitas"
+    }
+
+    @property
+    def title_label(self): return self.__title_label[Application.language]
+
+    __open_button: dict = {
+        "English": "Open",
+        "Portuguese": "Abrir"
+    }
+
+    @property
+    def open_button(self): return self.__open_button[Application.language]
+
 class MainWindow(Window):
+    __translator: MainWindowTranslator = MainWindowTranslator()
+
     def __init__(self) -> None:
         super().__init__("windows/designs/MainWindow.ui")
     
     # Overridable Functions
     def setup(self) -> None:
         # Title
-        self.labelTitle.setText("Os Meus Livros de Receitas")
+        self.labelTitle.setText(self.__translator.title_label)
 
         # Buttons
         self.buttonOpen.clicked.connect(self.open_book)
         self.buttonOpen.setEnabled(False)
-        self.buttonOpen.setText("Abrir")
+        self.buttonOpen.setText(self.__translator.open_button)
         self.buttonCreate.clicked.connect(self.create_book)
         self.buttonImport.clicked.connect(self.import_book)
 

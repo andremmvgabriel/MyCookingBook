@@ -15,7 +15,7 @@ class BookSaveError(Exception): ...
 class BookInvalidDataError(Exception): ...
 
 class Application:
-    __language: str
+    language: str
     __pdfs_path: str
     __books_path: str
     __temporary_path: str = Path.cwd() / "temp"
@@ -144,7 +144,7 @@ class Application:
             with open("configuration.json", "r") as file:
                 data = json.load(file)
 
-                cls.__language = data["language"]
+                cls.language = data["language"]
                 cls.__pdfs_path = data["save_pdfs_directory"] 
                 cls.__books_path = data["save_books_directory"]
         except KeyError:
