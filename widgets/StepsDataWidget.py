@@ -1,5 +1,7 @@
 from windows import Window
 
+from pdf_generator import PDF
+
 class StepsDataWidget(Window):
     __is_collapsed: bool = False
 
@@ -112,3 +114,23 @@ class StepsDataWidget(Window):
     def clear(self):
         for index in range(self.listSteps.count())[::-1]:
             self.listSteps.takeItem(index)
+    
+
+
+
+
+
+
+    def write_in_pdf(self, pdf: PDF):
+        pdf.set_font(pdf.font_family, "B", 16)
+
+        pdf.cell(0, 10, "II. Steps:", 1, 1, "L")
+
+        pdf.set_font(pdf.font_family, "", 12)
+        
+        for index in range(self.listSteps.count()):
+            pdf.ln(2)
+            text = self.listSteps.item(index).text()
+            pdf.multi_cell(0, 5, text, 1)
+
+        pdf.ln(5)

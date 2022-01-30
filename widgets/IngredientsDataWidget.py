@@ -1,5 +1,7 @@
 from windows import Window
 
+from pdf_generator import PDF
+
 class IngredientsDataWidget(Window):
     __is_collapsed: bool = False
 
@@ -111,3 +113,23 @@ class IngredientsDataWidget(Window):
     def clear(self):
         for index in range(self.listIngredients.count())[::-1]:
             self.listIngredients.takeItem(index)
+    
+
+
+
+
+
+    def write_in_pdf(self, pdf: PDF):
+        pdf.set_font(pdf.font_family, "B", 16)
+
+        pdf.cell(0, 10, "I. Ingredients:", 1, 1, "L")
+
+        pdf.set_font(pdf.font_family, "", 12)
+
+        for index in range(self.listIngredients.count()):
+            pdf.ln(2)
+            text = self.listIngredients.item(index).text()
+            pdf.multi_cell(0, 5, text, 1)
+
+        pdf.ln(5)
+    

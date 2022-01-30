@@ -9,6 +9,8 @@ from windows import Window
 import numpy as np
 import json
 
+from pdf_generator import PDF, PortraitPDF
+
 class OptionalDataWidget(Window):
     __is_collapsed: bool = False
     __max_size: int = 400
@@ -178,4 +180,58 @@ class OptionalDataWidget(Window):
     
     def create_image_from_list(self, list_data: list) -> Image:
         return Image.fromarray( np.array(list_data, dtype="uint8") )
+    
 
+
+
+
+    def write_in_pdf(self, pdf: PDF):
+        pdf.set_font_size(12)
+
+        init_x = pdf.x
+        init_y = pdf.y
+
+        img_y = pdf.y
+
+        pdf.set_font(pdf.font_family, "BU")
+        pdf.cell(115, 5, "Tags:", 1, 1, "C")
+        pdf.ln(1)
+
+        pdf.set_font(pdf.font_family, "")
+
+        tags_list = str()
+        for index in range(self.listTags.count()):
+            tag = self.listTags.item(index).text()
+            tags_list += f"{tag}; "
+        tags_list = tags_list[:-2] + "."
+        
+        pdf.multi_cell(115, 5, tags_list, 1)
+
+        pdf.ln(3)
+        
+        init_x = pdf.x
+        init_y = pdf.y
+
+        pdf.set_font(pdf.font_family, "BU")
+        pdf.cell(115, 5, "Descrição:", 1, 1, "C")
+        pdf.ln(1)
+        
+        pdf.set_font(pdf.font_family, "")
+
+        pdf.multi_cell(115, 5, f"{self.entryDescription.toPlainText()}", 1)
+
+        init_x = pdf.x
+        init_y = pdf.y
+
+        pdf.set_xy(130, img_y)
+        pdf.image("utils/NoImageIcon.png", w=70, h=70)
+
+        final_x = pdf.x
+        final_y = pdf.y
+
+        if final_y > init_y:
+            pdf.set_y(final_y)
+        else:
+            pdf.set_y(init_y)
+
+        pdf.ln(5)

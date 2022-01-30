@@ -1,10 +1,13 @@
 from Application import Application
 from data_structures.RecipeData import RecipeData
+from pdf_generator.PortraitPDF import PortraitPDF
 from .Window import Window
 from widgets.OptionalDataWidget import OptionalDataWidget
 from widgets.ComponentsDataWidget import ComponentsDataWidget
 from widgets.IngredientsDataWidget import IngredientsDataWidget
 from widgets.StepsDataWidget import StepsDataWidget
+
+from PyQt5.QtWidgets import QFileDialog
 
 from datetime import datetime
 
@@ -100,7 +103,19 @@ class RecipeWindow(Window):
         self.frameMainOptions.setHidden(False)
         self.frameEditOptions.setHidden(True)
     
-    def export_pdf(self): pass
+    def export_pdf(self):
+        pdf = PortraitPDF()
+        pdf.set_font("Arial", "B", 24)
+        pdf.add_page()
+        pdf.cell(0, 10, f"{self.entryName.text()}", 1, 1, "C")
+        pdf.ln(5)
+        self._optional.write_in_pdf(pdf)
+        self._ingredients.write_in_pdf(pdf)
+        self._steps.write_in_pdf(pdf)
+        pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
+    
+    # def write_in_pdf
+
 
     def close_window(self):
         Application.Windows.open("book")
