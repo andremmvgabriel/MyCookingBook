@@ -136,3 +136,4 @@ dmypy.json
 logs/
 books/
 output/
+pdfs/
