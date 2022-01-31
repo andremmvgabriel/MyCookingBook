@@ -127,13 +127,11 @@ class Application:
             return cls.__windows[tag]
     
     @classmethod
-    def _create_default_configurations(cls):
-        with open("configuration.json", "w") as file:
-            json.dump({
-                "language": "English",
-                "save_pdfs_directory": str(Path.cwd() / "pdfs"),
-                "save_books_directory": str(Path.cwd() / "books")
-            }, file, indent=4)
+    def _create_default_configurations(cls):        
+        cls.language = "English"
+        cls.__pdfs_path = str(Path.cwd() / "pdfs")
+        cls.__books_path = str(Path.cwd() / "books")
+        cls._save_configurations()
     
     @classmethod
     def _load_configurations(cls):
@@ -149,6 +147,15 @@ class Application:
                 cls.__books_path = data["save_books_directory"]
         except KeyError:
             logging.error("Configuration is missing a parameter. Fix the issue or delete the current configuration file (a default one will be created).")
+    
+    @classmethod
+    def _save_configurations(cls):
+        with open("configuration.json", "w") as file:
+            json.dump({
+                "language": cls.language,
+                "save_pdfs_directory": cls.__pdfs_path,
+                "save_books_directory": cls.__books_path
+            }, file, indent=4)
     
     @classmethod
     def _setup_directories(cls):

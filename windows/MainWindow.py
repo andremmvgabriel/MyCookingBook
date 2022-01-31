@@ -5,6 +5,11 @@ from Application import Application
 from windows_translators import MainWindowTranslator
 
 class MainWindow(Window):
+    __languages_list: list = [
+        "English",
+        "Portuguese"
+    ]
+
     def __init__(self) -> None:
         super().__init__(
             "windows/designs/MainWindow.ui",
@@ -20,9 +25,12 @@ class MainWindow(Window):
         self.buttonOpen.setEnabled(False)
         self.buttonCreate.clicked.connect(self.create_book)
         self.buttonImport.clicked.connect(self.import_book)
+        self.buttonMoreOptions.clicked.connect(self.open_options)
 
         # Dropbox
         self.entryBook.currentIndexChanged.connect(self.book_selected)
+        self.entryLanguage.currentIndexChanged.connect(self.change_language)
+        self.entryLanguage.setCurrentIndex(self.__languages_list.index(Application.language))
     
     def setup_language(self):
         # Labels
@@ -36,8 +44,11 @@ class MainWindow(Window):
         self.buttonMoreOptions.setText(self._translator.options_button)
 
         # Dropbox
-        self.entryLanguage.clear()
-        self.entryLanguage.addItems(self._translator.language_dropbox)
+        for index in range(self.entryLanguage.count()):
+            self.entryLanguage.setItemText(
+                index,
+                self._translator.language_dropbox[index]
+            )
     
     def refresh(self) -> None:
         self.entryBook.clear()
@@ -66,3 +77,11 @@ class MainWindow(Window):
     def book_selected(self):
         book_name = self.entryBook.currentText()
         self.buttonOpen.setEnabled(True if len(book_name) != 0 else False)
+    
+    def change_language(self):
+        Application.language = self.__languages_list[self.entryLanguage.currentIndex()]
+        Application._save_configurations()
+        self.setup_language()
+    
+    def open_options(self):
+        print("Options")
