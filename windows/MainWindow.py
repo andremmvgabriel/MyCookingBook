@@ -26,16 +26,17 @@ class MainWindow(Window):
     def setup_language(self):
         # Labels
         self.labelTitle.setText(self.__translator.title_label)
-        # Idiom label
+        self.labelLanguage.setText(self.__translator.language_label)
 
         # Buttons
         self.buttonOpen.setText(self.__translator.open_button)
         self.buttonCreate.setText(self.__translator.create_button)
         self.buttonImport.setText(self.__translator.import_button)
-        # More options button
+        self.buttonMoreOptions.setText(self.__translator.options_button)
 
         # Dropbox
-        # Idioms dropbox
+        self.entryLanguage.clear()
+        self.entryLanguage.addItems(self.__translator.language_dropbox)
     
     def refresh(self) -> None:
         self.entryBook.clear()
