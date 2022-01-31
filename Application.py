@@ -92,6 +92,7 @@ class Application:
 
             # Local imports to create each window
             from windows import MainWindow
+            from windows import OptionsWindow
             from windows import CreateBookWindow
             from windows import BookWindow
             from windows import CreateRecipeWindow
@@ -99,6 +100,7 @@ class Application:
 
             # Windows creation
             cls.__windows["main"] = MainWindow()
+            cls.__windows["options"] = OptionsWindow()
             cls.__windows["create_book"] = CreateBookWindow()
             cls.__windows["book"] = BookWindow()
             cls.__windows["create_recipe"] = CreateRecipeWindow()

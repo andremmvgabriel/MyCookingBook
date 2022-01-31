@@ -97,4 +97,4 @@ class MainWindow(Window):
         self.setup_language()
     
     def open_options(self):
-        print("Options")
+        Application.Windows.open("options")
