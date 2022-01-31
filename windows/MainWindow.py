@@ -5,10 +5,11 @@ from Application import Application
 from windows_translators import MainWindowTranslator
 
 class MainWindow(Window):
-    __translator: MainWindowTranslator = MainWindowTranslator()
-
     def __init__(self) -> None:
-        super().__init__("windows/designs/MainWindow.ui")
+        super().__init__(
+            "windows/designs/MainWindow.ui",
+            MainWindowTranslator()
+        )
     
     # Overridable Functions
     def setup(self) -> None:
@@ -25,18 +26,18 @@ class MainWindow(Window):
     
     def setup_language(self):
         # Labels
-        self.labelTitle.setText(self.__translator.title_label)
-        self.labelLanguage.setText(self.__translator.language_label)
+        self.labelTitle.setText(self._translator.title_label)
+        self.labelLanguage.setText(self._translator.language_label)
 
         # Buttons
-        self.buttonOpen.setText(self.__translator.open_button)
-        self.buttonCreate.setText(self.__translator.create_button)
-        self.buttonImport.setText(self.__translator.import_button)
-        self.buttonMoreOptions.setText(self.__translator.options_button)
+        self.buttonOpen.setText(self._translator.open_button)
+        self.buttonCreate.setText(self._translator.create_button)
+        self.buttonImport.setText(self._translator.import_button)
+        self.buttonMoreOptions.setText(self._translator.options_button)
 
         # Dropbox
         self.entryLanguage.clear()
-        self.entryLanguage.addItems(self.__translator.language_dropbox)
+        self.entryLanguage.addItems(self._translator.language_dropbox)
     
     def refresh(self) -> None:
         self.entryBook.clear()
