@@ -1,8 +1,11 @@
+import json
 import logging
 from pathlib import Path
 from .Window import Window
 from Application import Application
 from windows_translators import MainWindowTranslator
+
+from PyQt5.QtWidgets import QFileDialog
 
 class MainWindow(Window):
     __languages_list: list = [
@@ -72,7 +75,17 @@ class MainWindow(Window):
         Application.Windows.open("create_book")
     
     def import_book(self):
-        pass
+        file_name = QFileDialog.getOpenFileName(self, "Open file", "", "book files (*.json)")
+
+        if file_name[0] == "": return
+
+        try:
+            with open(file_name[0], "r") as file:
+                data = json.load(file)
+                # TODO - Complete method
+            
+        except json.JSONDecodeError:
+            print("Incorrect file format.")
 
     def book_selected(self):
         book_name = self.entryBook.currentText()
