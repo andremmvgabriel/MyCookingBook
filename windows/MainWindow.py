@@ -14,10 +14,7 @@ class MainWindow(Window):
     ]
 
     def __init__(self) -> None:
-        super().__init__(
-            "windows/designs/MainWindow.ui",
-            MainWindowTranslator()
-        )
+        super().__init__("windows/designs/MainWindow.ui", MainWindowTranslator())
     
     # Overridable Functions
     def setup(self) -> None:
@@ -58,7 +55,7 @@ class MainWindow(Window):
 
         # Dropbox
         
-        for book_path in Path(Application.get_books_path()).glob("*.json"):
+        for book_path in Path(Application.books_path).glob("*.json"):
             book_name = book_path.parts[-1].split(".")[0]
             self.entryBook.addItem(book_name)
         

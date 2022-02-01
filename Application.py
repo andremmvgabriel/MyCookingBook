@@ -16,9 +16,9 @@ class BookInvalidDataError(Exception): ...
 
 class Application:
     language: str
-    __pdfs_path: str
-    __books_path: str
-    __temporary_path: str = Path.cwd() / "temp"
+    pdfs_path: str
+    books_path: str
+    temporary_path: str = Path.cwd() / "temp"
 
     class Book:
         __book_data: BookData = BookData()
@@ -33,7 +33,7 @@ class Application:
         @classmethod
         def open(cls, book_name: str) -> None:
             try:
-                path_to_book = Path(Application.get_books_path()) / (book_name + ".json")
+                path_to_book = Path(Application.books_path) / (book_name + ".json")
                 with open(path_to_book, "r") as file:
                     cls.__book_data.unwrap(json.load(file))
                     cls.__is_open = True
@@ -46,7 +46,7 @@ class Application:
             if not cls.__is_open: return
             if not cls.__book_data.valid: raise BookInvalidDataError
             try:
-                path_to_book = Path(Application.get_books_path()) / (cls.__book_data.name + ".json")
+                path_to_book = Path(Application.books_path) / (cls.__book_data.name + ".json")
                 with open(path_to_book, "w") as file:
                     json.dump(cls.__book_data.wrap(), file, indent=4)
             except FileNotFoundError:
@@ -131,8 +131,8 @@ class Application:
     @classmethod
     def _create_default_configurations(cls):        
         cls.language = "English"
-        cls.__pdfs_path = str(Path.cwd() / "pdfs")
-        cls.__books_path = str(Path.cwd() / "books")
+        cls.pdfs_path = str(Path.cwd() / "pdfs")
+        cls.books_path = str(Path.cwd() / "books")
         cls._save_configurations()
     
     @classmethod
@@ -145,8 +145,8 @@ class Application:
                 data = json.load(file)
 
                 cls.language = data["language"]
-                cls.__pdfs_path = data["save_pdfs_directory"] 
-                cls.__books_path = data["save_books_directory"]
+                cls.pdfs_path = data["save_pdfs_directory"] 
+                cls.books_path = data["save_books_directory"]
         except KeyError:
             logging.error("Configuration is missing a parameter. Fix the issue or delete the current configuration file (a default one will be created).")
     
@@ -155,15 +155,15 @@ class Application:
         with open("configuration.json", "w") as file:
             json.dump({
                 "language": cls.language,
-                "save_pdfs_directory": cls.__pdfs_path,
-                "save_books_directory": cls.__books_path
+                "save_pdfs_directory": cls.pdfs_path,
+                "save_books_directory": cls.books_path
             }, file, indent=4)
     
     @classmethod
     def _setup_directories(cls):
-        Path(cls.__pdfs_path).mkdir(exist_ok=True)
-        Path(cls.__books_path).mkdir(exist_ok=True)
-        Path(cls.__temporary_path).mkdir(exist_ok=True)
+        Path(cls.pdfs_path).mkdir(exist_ok=True)
+        Path(cls.books_path).mkdir(exist_ok=True)
+        Path(cls.temporary_path).mkdir(exist_ok=True)
     
     @classmethod
     def _setup(cls):
@@ -183,9 +183,3 @@ class Application:
         cls._setup()
         cls._init()
         logging.info("Closed application.")
-    
-    @classmethod
-    def get_books_path(cls) -> str: return cls.__books_path
-
-    @classmethod
-    def set_books_path(cls, path: str) -> None: cls.__books_path = path
