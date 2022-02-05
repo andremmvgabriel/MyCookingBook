@@ -20,6 +20,8 @@ class Application:
     books_path: str
     temporary_path: str = Path.cwd() / "temp"
 
+    __app = QtWidgets.QApplication(sys.argv)
+
     class Book:
         __book_data: BookData = BookData()
         __is_open: bool = False
@@ -123,10 +125,19 @@ class Application:
         def close(cls, tag: str) -> None:
             logging.debug(f"Closing window: {tag}.")
             cls.__windows[tag].close()
+        
+        @classmethod
+        def setup_language(cls, tag: str) -> None:
+            logging.debug(f"Setting language in window: {tag}.")
+            cls.__windows[tag].setup_language()
 
         @classmethod
         def get(cls, tag: str):
             return cls.__windows[tag]
+        
+        @classmethod
+        def as_list(cls):
+            return cls.__windows.keys()
     
     @classmethod
     def _create_default_configurations(cls):        
@@ -137,18 +148,21 @@ class Application:
     
     @classmethod
     def _load_configurations(cls):
+        logging.debug("Loading app configurations...")
         if not os.path.exists("configuration.json"):
+            logging.debug("Configuration file missing. Creating default one.")
             cls._create_default_configurations()
         
         try:
             with open("configuration.json", "r") as file:
                 data = json.load(file)
-
                 cls.language = data["language"]
                 cls.pdfs_path = data["save_pdfs_directory"] 
                 cls.books_path = data["save_books_directory"]
         except KeyError:
             logging.error("Configuration is missing a parameter. Fix the issue or delete the current configuration file (a default one will be created).")
+        
+        logging.debug("Configurations loaded.")
     
     @classmethod
     def _save_configurations(cls):
@@ -161,21 +175,31 @@ class Application:
     
     @classmethod
     def _setup_directories(cls):
+        logging.debug("Setting up the app directories.")
         Path(cls.pdfs_path).mkdir(exist_ok=True)
         Path(cls.books_path).mkdir(exist_ok=True)
         Path(cls.temporary_path).mkdir(exist_ok=True)
     
     @classmethod
+    def setup_language(cls):
+        logging.debug("Setting up the windows language.")
+        for window in cls.Windows.as_list():
+            try: # REMOVE LATER
+                cls.Windows.setup_language(window)
+            except Exception:
+                pass
+    
+    @classmethod
     def _setup(cls):
         cls._load_configurations()
         cls._setup_directories()
+        cls.Windows.setup()
+        cls.setup_language()
     
     @classmethod
     def _init(cls):
-        app = QtWidgets.QApplication(sys.argv)
-        cls.Windows.setup()
         cls.Windows.open("main")
-        app.exec_()
+        cls.__app.exec_()
 
     @classmethod
     def start(cls) -> None:
