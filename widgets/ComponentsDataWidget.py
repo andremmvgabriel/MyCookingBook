@@ -52,6 +52,7 @@ class ComponentsDataWidget(Window):
 
         spacer = self.scrollComponentsLayout.layout().takeAt(self.scrollComponentsLayout.layout().count()-1)
         component = ComponentDataWidget()
+        component.setup_language()
         component.buttonHeader.setText(text)
         self.scrollComponentsLayout.layout().addWidget(component)
         self.scrollComponentsLayout.layout().addItem(spacer)
@@ -87,6 +88,7 @@ class ComponentsDataWidget(Window):
             component = ComponentDataWidget()
             component.open_data(component_data)
             component.enter_view_mode()
+            component.setup_language()
             self.scrollComponentsLayout.layout().addWidget(component)
         
         self.scrollComponentsLayout.layout().addItem(spacer)

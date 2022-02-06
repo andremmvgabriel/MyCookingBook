@@ -1,4 +1,5 @@
 from .OptionalDataWidgetTranslator import OptionalDataWidgetTranslator
 from .IngredientsDataWidgetTranslator import IngredientsDataWidgetTranslator
 from .StepsDataWidgetTranslator import StepsDataWidgetTranslator
+from .ComponentDataWidgetTranslator import ComponentDataWidgetTranslator
 from .ComponentsDataWidgetTranslator import ComponentsDataWidgetTranslator

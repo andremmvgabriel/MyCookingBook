@@ -6,6 +6,8 @@ from .StepsDataWidget import StepsDataWidget
 
 from pdf_generator import PDF
 
+from widgets_translators import ComponentDataWidgetTranslator
+
 class ComponentDataWidget(Window):
     __is_collapsed: bool = True
     
@@ -13,7 +15,7 @@ class ComponentDataWidget(Window):
         #self._optional = OptionalDataWidget()
         self._ingredients = IngredientsDataWidget()
         self._steps = StepsDataWidget()
-        super().__init__("widgets/designs/ComponentDataWidget.ui")
+        super().__init__("widgets/designs/ComponentDataWidget.ui", ComponentDataWidgetTranslator())
     
     def setup(self) -> None:
         # Modules
@@ -22,10 +24,17 @@ class ComponentDataWidget(Window):
         self.frameContents.layout().addWidget(self._steps)
 
         self.buttonHeader.clicked.connect(self.toggle_visibility)
-        self.buttonDelete.setText("Del")
         self.buttonDelete.clicked.connect(self.delete)
 
         self.setup_view()
+    
+    def setup_language(self):
+        # Buttons
+        self.buttonDelete.setText(self._translator.delete_button)
+
+        # Modules
+        self._ingredients.setup_language()
+        self._steps.setup_language()
     
     def delete(self):
         self.setParent(None)
