@@ -13,6 +13,7 @@ class Window(QtWidgets.QWidget):
 
     # Overridable functions
     def setup(self) -> None: pass
+    def setup_language(self) -> None: pass
     def refresh(self) -> None: pass
 
     #def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:

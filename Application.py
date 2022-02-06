@@ -184,10 +184,7 @@ class Application:
     def setup_language(cls):
         logging.debug("Setting up the windows language.")
         for window in cls.Windows.as_list():
-            try: # TODO - REMOVE LATER
-                cls.Windows.setup_language(window)
-            except Exception:
-                pass
+            cls.Windows.setup_language(window)
     
     @classmethod
     def _setup(cls):
