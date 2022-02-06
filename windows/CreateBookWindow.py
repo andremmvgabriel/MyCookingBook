@@ -16,10 +16,6 @@ class CreateBookWindow(Window):
     
     # Overridable 
     def setup(self) -> None:
-        # Labels
-        self.labelTitle.setText("Título")
-        self.labelAuthor.setText("Autor")
-
         # Buttons
         self.buttonCreate.clicked.connect(self.create_book)
         self.buttonCancel.clicked.connect(self.close)
