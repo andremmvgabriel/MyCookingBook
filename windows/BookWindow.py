@@ -10,14 +10,10 @@ class BookWindow(Window):
     def __init__(self) -> None:
         super().__init__("windows/designs/BookWindow.ui", BookWindowTranslator())
     
-    def close(self) -> bool:
-        Application.Windows.open("main")
-        return super().close()
-    
     def setup(self) -> None:
         # Buttons
         self.buttonCreateRecipe.clicked.connect(self.create_recipe)
-        self.buttonClose.clicked.connect(self.close)
+        self.buttonClose.clicked.connect(self.exit)
     
     def setup_language(self) -> None:
         # Labels
@@ -34,6 +30,10 @@ class BookWindow(Window):
     
     def create_recipe(self) -> None:
         Application.Windows.open("create_recipe")
+    
+    def exit(self):
+        Application.Windows.open("main")
+        self.close()
     
     def refresh(self):
         self.clear_scroll_area()
