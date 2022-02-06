@@ -3,17 +3,17 @@ from windows import Window
 from .ComponentDataWidget import ComponentDataWidget
 from pdf_generator import PDF
 
+from widgets_translators import ComponentsDataWidgetTranslator
+
 class ComponentsDataWidget(Window):
     __is_collapsed: bool = False
 
     def __init__(self) -> None:
-        super().__init__("widgets/designs/ComponentsDataWidget.ui")
+        super().__init__("widgets/designs/ComponentsDataWidget.ui", ComponentsDataWidgetTranslator())
     
     def setup(self):
         # Buttons
-        self.buttonComponents.setText("Componentes")
         self.buttonComponents.clicked.connect(self.toggle_visibility)
-        self.buttonAdd.setText("Adicionar")
         self.buttonAdd.clicked.connect(self.add_component)
 
         self.buttonAdd.setEnabled(False)
@@ -23,6 +23,11 @@ class ComponentsDataWidget(Window):
         self.entryComponent.returnPressed.connect(self.return_key_pressed)
 
         self.setup_view()
+    
+    def setup_language(self):
+        # Buttons
+        self.buttonComponents.setText(self._translator.components_button)
+        self.buttonAdd.setText(self._translator.add_button)
     
     def text_changed(self):
         # Get text
