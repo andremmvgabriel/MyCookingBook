@@ -18,8 +18,6 @@ class MainWindow(Window):
     
     # Overridable Functions
     def setup(self) -> None:
-        self.setup_language()
-
         # Buttons
         self.buttonOpen.clicked.connect(self.open_book)
         self.buttonOpen.setEnabled(False)
@@ -91,7 +89,7 @@ class MainWindow(Window):
     def change_language(self):
         Application.language = self.__languages_list[self.entryLanguage.currentIndex()]
         Application._save_configurations()
-        self.setup_language()
+        Application.setup_language()
     
     def open_options(self):
         Application.Windows.open("options")
