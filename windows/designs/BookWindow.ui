@@ -84,7 +84,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelFilters">
           <property name="text">
            <string>Filters:</string>
           </property>
@@ -98,7 +98,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonExit">
+         <widget class="QPushButton" name="buttonClose">
           <property name="text">
            <string>Close</string>
           </property>
