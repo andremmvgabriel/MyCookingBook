@@ -2,19 +2,18 @@ from windows import Window
 
 from pdf_generator import PDF
 
+from widgets_translators import IngredientsDataWidgetTranslator
+
 class IngredientsDataWidget(Window):
     __is_collapsed: bool = False
 
     def __init__(self) -> None:
-        super().__init__("widgets/designs/IngredientsDataWidget.ui")
+        super().__init__("widgets/designs/IngredientsDataWidget.ui", IngredientsDataWidgetTranslator())
     
     def setup(self) -> None:
         # Buttons
-        self.buttonIngredients.setText("Ingredientes")
         self.buttonIngredients.clicked.connect(self.toggle_visibility)
-        self.buttonAddIngredient.setText("Adicionar")
         self.buttonAddIngredient.clicked.connect(self.add_ingredient)
-        self.buttonRemoveIngredient.setText("Remover")
         self.buttonRemoveIngredient.clicked.connect(self.remove_ingredient)
 
         self.buttonAddIngredient.setEnabled(False)
@@ -26,6 +25,12 @@ class IngredientsDataWidget(Window):
         self.listIngredients.currentItemChanged.connect(self.ingredient_selected)
 
         self.setup_view()
+    
+    def setup_language(self) -> None:
+        # Buttons
+        self.buttonIngredients.setText(self._translator.ingredients_button)
+        self.buttonAddIngredient.setText(self._translator.add_button)
+        self.buttonRemoveIngredient.setText(self._translator.remove_button)
 
     def ingredient_text_changed(self):
         # Get text
