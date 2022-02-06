@@ -2,19 +2,18 @@ from windows import Window
 
 from pdf_generator import PDF
 
+from widgets_translators import StepsDataWidgetTranslator
+
 class StepsDataWidget(Window):
     __is_collapsed: bool = False
 
     def __init__(self) -> None:
-        super().__init__("widgets/designs/StepsDataWidget.ui")
+        super().__init__("widgets/designs/StepsDataWidget.ui", StepsDataWidgetTranslator())
     
     def setup(self) -> None:
         # Buttons
-        self.buttonSteps.setText("Passos")
         self.buttonSteps.clicked.connect(self.toggle_visibility)
-        self.buttonAdd.setText("Adicionar")
         self.buttonAdd.clicked.connect(self.add)
-        self.buttonRemove.setText("Remover")
         self.buttonRemove.clicked.connect(self.remove)
 
         self.buttonAdd.setEnabled(False)
@@ -26,6 +25,11 @@ class StepsDataWidget(Window):
         self.listSteps.currentItemChanged.connect(self.step_selected)
 
         self.setup_view()
+    
+    def setup_language(self):
+        self.buttonSteps.setText(self._translator.steps_button)
+        self.buttonAdd.setText(self._translator.add_button)
+        self.buttonRemove.setText(self._translator.remove_button)
 
     def text_changed(self):
         # Get text
@@ -53,7 +57,7 @@ class StepsDataWidget(Window):
         text = self.entryStep.text()
         text = text.capitalize()
         n_step = self.listSteps.count()
-        text = f"Passo {n_step+1}: {text}"
+        text = f"{self._translator.step_key} {n_step+1}: {text}"
         self.entryStep.setText("")
         self.listSteps.addItem(text)
 
@@ -70,7 +74,7 @@ class StepsDataWidget(Window):
         for index in range(self.listSteps.count()):
             text = self.listSteps.item(index).text()
             _, step = text.split(": ")
-            text = f"Passo {index + 1}: {step}"
+            text = f"{self._translator.step_key} {index + 1}: {step}"
             self.listSteps.item(index).setText(text)
 
         # Deactivates once again the remove button
@@ -92,7 +96,7 @@ class StepsDataWidget(Window):
         
         # Writes
         for index in range(len(data["steps"])):
-            self.listSteps.addItem(f"Passo {index + 1}: {data['steps'][index]}")
+            self.listSteps.addItem(f"{self._translator.step_key} {index + 1}: {data['steps'][index]}")
     
     def enter_edit_mode(self):
         self.frameEdit.setHidden(False)
