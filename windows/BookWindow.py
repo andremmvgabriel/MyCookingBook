@@ -13,6 +13,7 @@ class BookWindow(Window):
     def setup(self) -> None:
         # Buttons
         self.buttonCreateRecipe.clicked.connect(self.create_recipe)
+        self.buttonExport.clicked.connect(self.export_pdf)
         self.buttonClose.clicked.connect(self.exit)
     
     def setup_language(self) -> None:
@@ -26,10 +27,14 @@ class BookWindow(Window):
         
         # Buttons
         self.buttonCreateRecipe.setText(self._translator.create_recipe_button)
+        self.buttonExport.setText(self._translator.export_button)
         self.buttonClose.setText(self._translator.close_button)
     
     def create_recipe(self) -> None:
         Application.Windows.open("create_recipe")
+    
+    def export_pdf(self) -> None:
+        pass
     
     def exit(self):
         Application.Windows.open("main")

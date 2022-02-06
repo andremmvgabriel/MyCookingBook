@@ -77,6 +77,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="buttonExport">
+          <property name="text">
+           <string>Export PDF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="Line" name="line_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

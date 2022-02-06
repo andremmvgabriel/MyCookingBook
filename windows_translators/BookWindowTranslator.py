@@ -59,6 +59,14 @@ class BookWindowTranslator(Translator):
     @property
     def create_recipe_button(self): return self.translate(self.__create_recipe_button)
 
+    __export_button: dict = {
+        "English": "Export PDF",
+        "Portuguese": "Exportar PDF"
+    }
+
+    @property
+    def export_button(self): return self.translate(self.__export_button)
+
     __close_button: dict = {
         "English": "Close",
         "Portuguese": "Fechar"
