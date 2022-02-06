@@ -47,4 +47,5 @@ class OptionsWindow(Window):
         Application.pdfs_path = self.entryPDFs.text()
         Application.books_path = self.entryBooks.text()
         Application._save_configurations()
+        Application.Windows.refresh("main")
         self.close()
