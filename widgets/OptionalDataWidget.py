@@ -11,22 +11,20 @@ import json
 
 from pdf_generator import PDF, PortraitPDF
 
+from widgets_translators import OptionalDataWidgetTranslator
+
 class OptionalDataWidget(Window):
     __is_collapsed: bool = False
     __max_size: int = 400
 
     def __init__(self) -> None:
-        super().__init__("widgets/designs/OptionalDataWidget.ui")
+        super().__init__("widgets/designs/OptionalDataWidget.ui", OptionalDataWidgetTranslator())
     
     def setup(self) -> None:
         # Buttons
-        self.buttonOptional.setText("Opcional")
         self.buttonOptional.clicked.connect(self.toggle_visibility)
-        self.buttonAddTag.setText("Adicionar")
         self.buttonAddTag.clicked.connect(self.add_tag)
-        self.buttonRemoveTag.setText("Remover")
         self.buttonRemoveTag.clicked.connect(self.remove_tag)
-        self.buttonSelectImage.setText("Selecionar imagem")
         self.buttonSelectImage.clicked.connect(self.select_image)
 
         self.buttonAddTag.setEnabled(False)
@@ -38,6 +36,18 @@ class OptionalDataWidget(Window):
         self.listTags.currentItemChanged.connect(self.tag_selected)
 
         self.setup_view()
+    
+    def setup_language(self):
+        # Labels
+        self.labelAuthor.setText(self._translator.author_label)
+        self.labelTags.setText(self._translator.tags_label)
+        self.labelDescription.setText(self._translator.description_label)
+        
+        # Buttons
+        self.buttonOptional.setText(self._translator.optional_button)
+        self.buttonAddTag.setText(self._translator.add_tag_button)
+        self.buttonRemoveTag.setText(self._translator.remove_tag_button)
+        self.buttonSelectImage.setText(self._translator.select_image_button)
 
     def tag_text_changed(self):
         # Get text
