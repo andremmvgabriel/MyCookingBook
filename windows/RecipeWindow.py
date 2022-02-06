@@ -9,6 +9,8 @@ from widgets.ComponentsDataWidget import ComponentsDataWidget
 from widgets.IngredientsDataWidget import IngredientsDataWidget
 from widgets.StepsDataWidget import StepsDataWidget
 
+from pdf_generator import PDF
+
 from windows_translators import RecipeWindowTranslator
 
 class RecipeWindow(Window):
@@ -111,21 +113,6 @@ class RecipeWindow(Window):
         self.frameDelete.setHidden(True)
         self.frameMainOptions.setHidden(False)
         self.frameEditOptions.setHidden(True)
-    
-    def export_pdf(self):
-        pdf = PortraitPDF()
-        pdf.set_font("Arial", "B", 24)
-        pdf.add_page()
-        pdf.cell(0, 10, f"{self.entryName.text()}", 1, 1, "C")
-        pdf.ln(5)
-        self._optional.write_in_pdf(pdf)
-        self._ingredients.write_in_pdf(pdf)
-        self._steps.write_in_pdf(pdf)
-        self._components.write_in_pdf(pdf)
-        pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
-    
-    # def write_in_pdf
-
 
     def close_window(self):
         Application.Windows.open("book")
@@ -177,3 +164,18 @@ class RecipeWindow(Window):
     def show(self) -> None:
         self.enter_view_mode()
         self.showMaximized()
+    
+    def export_pdf(self):
+        pdf = PortraitPDF()
+        pdf.set_font("Arial", "B", 24)
+        pdf.add_page()
+        self.write_in_pdf(pdf)
+        pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
+    
+    def write_in_pdf(self, pdf: PDF):
+        pdf.cell(0, 10, f"{self.entryName.text()}", 1, 1, "C")
+        pdf.ln(5)
+        self._optional.write_in_pdf(pdf)
+        self._ingredients.write_in_pdf(pdf)
+        self._steps.write_in_pdf(pdf)
+        self._components.write_in_pdf(pdf)
