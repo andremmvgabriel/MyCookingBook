@@ -125,14 +125,14 @@ class ComponentsDataWidget(Window):
         
         pdf.set_font(pdf.font_family, "B", 16)
 
-        pdf.cell(0, 10, "III. Components:", 1, 1, "L")
+        pdf.cell(0, 10, "III. Components:", 0, 1, "L")
 
         pdf.set_font(pdf.font_family, "", 12)
         
         for index in range(self.scrollComponentsLayout.layout().count() - 1):
             pdf.ln(2)
             pdf.set_font(pdf.font_family, "B", 14)
-            pdf.cell(15, 8, f"III.C{index})", 1)
+            pdf.cell(15, 8, f"III.C{index})", 0)
             self.scrollComponentsLayout.layout().itemAt(index).widget().write_in_pdf(pdf)
 
         pdf.ln(5)

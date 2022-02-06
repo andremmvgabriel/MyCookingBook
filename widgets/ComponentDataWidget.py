@@ -91,7 +91,7 @@ class ComponentDataWidget(Window):
     def write_in_pdf(self, pdf: PDF):
         pdf.set_font(pdf.font_family, "B", 14)
 
-        pdf.cell(0, 8, f"{self.buttonHeader.text()}", 1, 1, "L")
+        pdf.cell(0, 8, f"{self.buttonHeader.text()}", 0, 1, "L")
 
         pdf.set_font(pdf.font_family, "", 12)
 

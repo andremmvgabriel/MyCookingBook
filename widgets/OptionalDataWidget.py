@@ -204,7 +204,7 @@ class OptionalDataWidget(Window):
         img_y = pdf.y
 
         pdf.set_font(pdf.font_family, "BU")
-        pdf.cell(115, 5, "Tags:", 1, 1, "C")
+        pdf.cell(115, 5, "Tags:", 0, 1, "C")
         pdf.ln(1)
 
         pdf.set_font(pdf.font_family, "")
@@ -215,7 +215,7 @@ class OptionalDataWidget(Window):
             tags_list += f"{tag}; "
         tags_list = tags_list[:-2] + "."
         
-        pdf.multi_cell(115, 5, tags_list, 1)
+        pdf.multi_cell(115, 5, tags_list, 0)
 
         pdf.ln(3)
         
@@ -223,12 +223,12 @@ class OptionalDataWidget(Window):
         init_y = pdf.y
 
         pdf.set_font(pdf.font_family, "BU")
-        pdf.cell(115, 5, "Descrição:", 1, 1, "C")
+        pdf.cell(115, 5, "Descrição:", 0, 1, "C")
         pdf.ln(1)
         
         pdf.set_font(pdf.font_family, "")
 
-        pdf.multi_cell(115, 5, f"{self.entryDescription.toPlainText()}", 1)
+        pdf.multi_cell(115, 5, f"{self.entryDescription.toPlainText()}", 0)
 
         init_x = pdf.x
         init_y = pdf.y

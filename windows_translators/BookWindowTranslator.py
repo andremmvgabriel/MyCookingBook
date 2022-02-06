@@ -74,3 +74,17 @@ class BookWindowTranslator(Translator):
 
     @property
     def close_button(self): return self.translate(self.__close_button)
+
+
+
+    ###
+    # Keywords
+    ###
+
+    __book_author_key: dict = {
+        "English": "A book by",
+        "Portuguese": "Livro escrito por"
+    }
+
+    @property
+    def book_author_key(self): return self.translate(self.__book_author_key)

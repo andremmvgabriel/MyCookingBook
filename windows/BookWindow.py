@@ -4,6 +4,8 @@ from Application import Application
 from .Window import Window
 from widgets.RecipeCard import RecipeCard
 
+from pdf_generator import PDF, PortraitPDF
+
 from windows_translators import BookWindowTranslator
 
 class BookWindow(Window):
@@ -33,8 +35,23 @@ class BookWindow(Window):
     def create_recipe(self) -> None:
         Application.Windows.open("create_recipe")
     
-    def export_pdf(self) -> None:
-        pass
+    def export_pdf(self) -> None:        
+        pdf = PortraitPDF()
+        self.write_in_pdf(pdf)
+        pdf.output(f"pdfs/{Application.Book.data().name}.pdf", "F")
+    
+    def write_in_pdf(self, pdf: PDF):
+        pdf.add_page()
+        
+        pdf.set_font("Arial", "B", 40)
+        pdf.set_y(100)
+        pdf.multi_cell(0, 40, Application.Book.data().name, 0, "C")
+
+        pdf.set_font("Arial", "B", 16)
+        pdf.multi_cell(0, 10, f"{self._translator.book_author_key}: {Application.Book.data().author}", 0, "C")
+
+        for index in range(self.scrollAreaWidgetContents.layout().count() - 1):
+            self.scrollAreaWidgetContents.layout().itemAt(index).widget().write_in_pdf(pdf)
     
     def exit(self):
         Application.Windows.open("main")

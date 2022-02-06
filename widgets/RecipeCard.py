@@ -2,6 +2,8 @@ from windows.Window import Window
 from data_structures import RecipeData
 from Application import Application
 
+from pdf_generator import PDF
+
 class RecipeCard(Window):
     def __init__(self, recipe: RecipeData) -> None:
         self._recipe = recipe
@@ -16,3 +18,7 @@ class RecipeCard(Window):
         Application.Windows.get("recipe").open_recipe(self._recipe)
         Application.Windows.open("recipe")
         Application.Windows.close("book")
+    
+    def write_in_pdf(self, pdf: PDF):
+        Application.Windows.get("recipe").open_recipe(self._recipe)
+        Application.Windows.get("recipe").write_in_pdf(pdf)

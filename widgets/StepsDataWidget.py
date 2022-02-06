@@ -128,24 +128,24 @@ class StepsDataWidget(Window):
     def write_in_pdf(self, pdf: PDF):
         pdf.set_font(pdf.font_family, "B", 16)
 
-        pdf.cell(0, 10, "II. Steps:", 1, 1, "L")
+        pdf.cell(0, 10, "II. Steps:", 0, 1, "L")
 
         pdf.set_font(pdf.font_family, "", 12)
         
         for index in range(self.listSteps.count()):
             pdf.ln(2)
             text = self.listSteps.item(index).text()
-            pdf.multi_cell(0, 5, text, 1)
+            pdf.multi_cell(0, 5, text, 0)
 
-        pdf.ln(5)
+        pdf.ln(15)
     
     def write_int_pdf_as_component(self, pdf: PDF):
-        pdf.cell(0, 10, "Steps:", 1, 1, "C")
+        pdf.cell(0, 10, "Steps:", 0, 1, "C")
         pdf.set_font(pdf.font_family, "", 12)
 
         for index in range(self.listSteps.count()):
             pdf.ln(2)
             text = self.listSteps.item(index).text()
-            pdf.multi_cell(0, 5, text, 1)
+            pdf.multi_cell(0, 5, text, 0)
         
         pdf.ln(5)

@@ -167,12 +167,12 @@ class RecipeWindow(Window):
     
     def export_pdf(self):
         pdf = PortraitPDF()
-        pdf.set_font("Arial", "B", 24)
-        pdf.add_page()
         self.write_in_pdf(pdf)
         pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
     
     def write_in_pdf(self, pdf: PDF):
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 24)
         pdf.cell(0, 10, f"{self.entryName.text()}", 1, 1, "C")
         pdf.ln(5)
         self._optional.write_in_pdf(pdf)
