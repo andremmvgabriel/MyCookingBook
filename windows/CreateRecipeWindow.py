@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from Application import Application
 from data_structures.RecipeData import RecipeData
 from .Window import Window
@@ -6,7 +8,7 @@ from widgets.ComponentsDataWidget import ComponentsDataWidget
 from widgets.IngredientsDataWidget import IngredientsDataWidget
 from widgets.StepsDataWidget import StepsDataWidget
 
-from datetime import datetime
+from windows_translators import CreateRecipeWindowTranslator
 
 class CreateRecipeWindow(Window):
     def __init__(self) -> None:
@@ -14,7 +16,7 @@ class CreateRecipeWindow(Window):
         self._ingredients = IngredientsDataWidget()
         self._steps = StepsDataWidget()
         self._components = ComponentsDataWidget()
-        super().__init__("windows/designs/CreateRecipeWindowV4.ui")
+        super().__init__("windows/designs/CreateRecipeWindow.ui", CreateRecipeWindowTranslator())
     
     def setup(self) -> None:
         # Modules
@@ -23,12 +25,26 @@ class CreateRecipeWindow(Window):
         self.leftSide.addWidget(self._steps)
         self.rightSide.addWidget(self._components)
 
-        # Labels
-        self.labelRecipeName.setText("Nome da receita:")
-
         # Buttons
         self.buttonCreate.clicked.connect(self.create_recipe)
         self.buttonCancel.clicked.connect(self.close)
+    
+    def setup_language(self) -> None:
+        # Labels
+        self.labelRecipeName.setText(f"{self._translator.recipe_name_label}:")
+
+        # Buttons
+        self.buttonCreate.setText(self._translator.create_button)
+        self.buttonCancel.setText(self._translator.cancel_button)
+
+        # Line edits
+        self.entryName.setPlaceholderText(self._translator.name_placeholder_entry)
+
+        # Modules
+        self._optional.setup_language()
+        self._ingredients.setup_language()
+        self._steps.setup_language()
+        self._components.setup_language()
     
     def create_recipe(self):
         recipe = RecipeData()
