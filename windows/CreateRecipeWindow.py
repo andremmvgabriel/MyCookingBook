@@ -2,7 +2,7 @@ from datetime import datetime
 
 from Application import Application
 from data_structures.RecipeData import RecipeData
-from .Window import Window
+from utils import Window
 from widgets.OptionalDataWidget import OptionalDataWidget
 from widgets.ComponentsDataWidget import ComponentsDataWidget
 from widgets.IngredientsDataWidget import IngredientsDataWidget

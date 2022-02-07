@@ -1,4 +1,4 @@
-from windows.Window import Window
+from utils import Window
 from data_structures import RecipeData
 from Application import Application
 

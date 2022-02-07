@@ -3,7 +3,7 @@ from urllib3 import Retry
 
 from Application import Application
 
-from .Window import Window
+from utils import Window
 
 from windows_translators import OptionsWindowTranslator
 

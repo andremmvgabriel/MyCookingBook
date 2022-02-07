@@ -1,4 +1,4 @@
-from windows import Window
+from utils import Window
 
 from .OptionalDataWidget import OptionalDataWidget
 from .IngredientsDataWidget import IngredientsDataWidget

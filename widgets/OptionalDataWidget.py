@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice
 from PyQt5.QtGui import QPixmap
 
-from windows import Window
+from utils import Window
 
 import numpy as np
 import json
