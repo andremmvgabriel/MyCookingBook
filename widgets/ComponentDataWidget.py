@@ -95,7 +95,7 @@ class ComponentDataWidget(Window):
 
         pdf.set_font(pdf.font_family, "", 12)
 
-        self._ingredients.write_int_pdf_as_component(pdf)
-        self._steps.write_int_pdf_as_component(pdf)
+        self._ingredients.write_in_pdf_as_component(pdf)
+        self._steps.write_in_pdf_as_component(pdf)
 
         pdf.ln(5)
