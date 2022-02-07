@@ -35,6 +35,14 @@ class StepsDataWidgetTranslator(Translator):
     # Keywords
     ###
 
+    __steps_key: dict = {
+        "English": "Steps",
+        "Portuguese": "Passos"
+    }
+
+    @property
+    def steps_key(self): return self.translate(self.__steps_key)
+
     __step_key: dict = {
         "English": "Step",
         "Portuguese": "Passo"

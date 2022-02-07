@@ -28,3 +28,17 @@ class IngredientsDataWidgetTranslator(Translator):
 
     @property
     def remove_button(self): return self.translate(self.__remove_button)
+
+
+
+    ###
+    # Keywords
+    ###
+
+    __ingredients_key: dict = {
+        "English": "Ingredients",
+        "Portuguese": "Ingredientes"
+    }
+
+    @property
+    def ingredients_key(self): return self.translate(self.__ingredients_key)

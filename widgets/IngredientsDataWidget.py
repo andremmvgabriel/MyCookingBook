@@ -127,7 +127,7 @@ class IngredientsDataWidget(Window):
     def write_in_pdf(self, pdf: PDF):
         pdf.set_font(pdf.font_family, "B", 16)
 
-        pdf.cell(0, 10, "I. Ingredients:", 0, 1, "L")
+        pdf.cell(0, 10, f"I. {self._translator.ingredients_key}:", 0, 1, "L")
 
         pdf.set_font(pdf.font_family, "", 12)
 
@@ -141,7 +141,7 @@ class IngredientsDataWidget(Window):
     def write_in_pdf_as_component(self, pdf: PDF):
         if self.listIngredients.count() == 0: return 
         
-        pdf.cell(0, 10, "Ingredients:", 0, 1, "C")
+        pdf.cell(0, 10, f"{self._translator.ingredients_key}:", 0, 1, "C")
         pdf.set_font(pdf.font_family, "", 12)
 
         for index in range(self.listIngredients.count()):
