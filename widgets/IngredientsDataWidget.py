@@ -138,7 +138,9 @@ class IngredientsDataWidget(Window):
 
         pdf.ln(15)
     
-    def write_int_pdf_as_component(self, pdf: PDF):
+    def write_in_pdf_as_component(self, pdf: PDF):
+        if self.listIngredients.count() == 0: return 
+        
         pdf.cell(0, 10, "Ingredients:", 0, 1, "C")
         pdf.set_font(pdf.font_family, "", 12)
 
