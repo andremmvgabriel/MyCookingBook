@@ -1,7 +1,7 @@
 import json
 import logging
 from pathlib import Path
-from .Window import Window
+from utils import Window
 from Application import Application
 from windows_translators import MainWindowTranslator
 

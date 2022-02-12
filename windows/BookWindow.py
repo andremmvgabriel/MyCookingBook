@@ -1,7 +1,7 @@
 import json
 from Application import Application
 
-from .Window import Window
+from utils import Window
 from widgets.RecipeCard import RecipeCard
 
 from pdf_generator import PDF, PortraitPDF

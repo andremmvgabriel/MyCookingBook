@@ -1,6 +1,6 @@
 import logging
 from data_structures import BookData
-from .Window import Window
+from utils import Window
 from Application import Application, BookSaveError
 
 from windows_translators import CreateBookWindowTranslator

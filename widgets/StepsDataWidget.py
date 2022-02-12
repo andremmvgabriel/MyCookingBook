@@ -1,4 +1,4 @@
-from windows import Window
+from utils import Window
 
 from pdf_generator import PDF
 
@@ -128,7 +128,7 @@ class StepsDataWidget(Window):
     def write_in_pdf(self, pdf: PDF):
         pdf.set_font(pdf.font_family, "B", 16)
 
-        pdf.cell(0, 10, "II. Steps:", 0, 1, "L")
+        pdf.cell(0, 10, f"II. {self._translator.steps_key}:", 0, 1, "L")
 
         pdf.set_font(pdf.font_family, "", 12)
         
@@ -142,7 +142,7 @@ class StepsDataWidget(Window):
     def write_in_pdf_as_component(self, pdf: PDF):
         if self.listSteps.count() == 0: return 
 
-        pdf.cell(0, 10, "Steps:", 0, 1, "C")
+        pdf.cell(0, 10, f"{self._translator.steps_key}:", 0, 1, "C")
         pdf.set_font(pdf.font_family, "", 12)
 
         for index in range(self.listSteps.count()):

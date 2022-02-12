@@ -1,4 +1,4 @@
-from windows import Window
+from utils import Window
 
 from .ComponentDataWidget import ComponentDataWidget
 from pdf_generator import PDF
