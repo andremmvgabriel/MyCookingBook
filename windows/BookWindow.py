@@ -58,6 +58,11 @@ class BookWindow(Window):
         self.close()
     
     def refresh(self):
+        self.labelBookName.setText(f"{self._translator.book_name_label}: {Application.Book.data().name}")
+        self.labelAuthorName.setText(f"{self._translator.author_name_label}: {Application.Book.data().author}")
+        self.labelRecipesCounter.setText(f"{self._translator.recipes_counter_label}: {len(Application.Book.data().recipies)}")
+        self.labelDate.setText(f"{self._translator.date_label}: {Application.Book.data().date[2]}/{Application.Book.data().date[1]}/{Application.Book.data().date[0]}")
+        
         self.clear_scroll_area()
         self.build_scroll_area()
 
