@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from Application import Application
 
 from utils import Window
@@ -38,7 +39,7 @@ class BookWindow(Window):
     def export_pdf(self) -> None:        
         pdf = PortraitPDF()
         self.write_in_pdf(pdf)
-        pdf.output(f"pdfs/{Application.Book.data().name}.pdf", "F")
+        pdf.output(f"{Path(Application.pdfs_path) / Application.Book.data().name}.pdf", "F")
     
     def write_in_pdf(self, pdf: PDF):
         pdf.add_page()

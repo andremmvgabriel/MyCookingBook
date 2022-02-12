@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from Application import Application
 from data_structures.RecipeData import RecipeData
@@ -168,7 +169,7 @@ class RecipeWindow(Window):
     def export_pdf(self):
         pdf = PortraitPDF()
         self.write_in_pdf(pdf)
-        pdf.output(f"pdfs/{self.entryName.text()}.pdf", "F")
+        pdf.output(f"{Path(Application.pdfs_path) / self.entryName.text()}.pdf", "F")
     
     def write_in_pdf(self, pdf: PDF):
         pdf.add_page()
